@@ -1,0 +1,131 @@
+\anonsection{ПРИЛОЖЕНИЕ А}\label{app:signin}
+
+\begin{lstlisting}[caption={реализация GUI окна входа/регистрации}]
+	class Ui_MainWindow(object):
+		def setupUi(self, MainWindow):
+			MainWindow.setObjectName("MainWindow")
+			MainWindow.resize(800, 600)
+			self.centralwidget = QtWidgets.QWidget(MainWindow)
+			self.centralwidget.setObjectName("centralwidget")
+			self.signin_button = QtWidgets.QPushButton(self.centralwidget)
+			self.signin_button.setGeometry(QtCore.QRect(240, 290, 161, 31))
+			font = QtGui.QFont()
+			font.setPointSize(12)
+			self.signin_button.setFont(font)
+			self.signin_button.setObjectName("signin_button")
+			self.signup_button = QtWidgets.QPushButton(self.centralwidget)
+			self.signup_button.setGeometry(QtCore.QRect(420, 290, 161, 31))
+			font = QtGui.QFont()
+			font.setPointSize(12)
+			self.signup_button.setFont(font)
+			self.signup_button.setObjectName("signup_button")
+			self.label = QtWidgets.QLabel(self.centralwidget)
+			self.label.setGeometry(QtCore.QRect(300, 250, 251, 20))
+			font = QtGui.QFont()
+			font.setPointSize(12)
+			self.label.setFont(font)
+			self.label.setObjectName("label")
+			MainWindow.setCentralWidget(self.centralwidget)
+			self.menubar = QtWidgets.QMenuBar(MainWindow)
+			self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 18))
+			self.menubar.setObjectName("menubar")
+			MainWindow.setMenuBar(self.menubar)
+			self.statusbar = QtWidgets.QStatusBar(MainWindow)
+			self.statusbar.setObjectName("statusbar")
+			MainWindow.setStatusBar(self.statusbar)
+			
+			self.retranslateUi(MainWindow)
+			QtCore.QMetaObject.connectSlotsByName(MainWindow)
+\end{lstlisting}
+
+\clearpage
+
+\specsection{ПРИЛОЖЕНИЕ Б} \label{app:controller}
+
+\begin{lstlisting}[caption={контроллер окна входа/регистрации}]
+	class Welcome(QtWidgets.QMainWindow, welcome.Ui_MainWindow):
+		def __init__(self):
+			super().__init__()
+			self.setupUi(self)
+			self.signin_button.clicked.connect(self.sign_in)
+			self.signup_button.clicked.connect(self.sign_up)
+	
+		def sign_in(self):
+			self.window = SignIn()
+			self.window.show()
+	
+		def sign_up(self):
+			self.window = SignUp()
+			self.window.show()
+\end{lstlisting}
+
+\clearpage
+
+\specsection{ПРИЛОЖЕНИЕ В} \label{app:db}
+
+\begin{lstlisting}[caption={подключение к БД с разными ролями}]
+    def connect():
+    	connection = None
+    	try:
+    		connection = psycopg2.connect(host="localhost", database="DB_course",
+    		user="postgres", password="****")
+    	except OperationalError as e:
+    		print("The error '{e}' occurred")
+    	return connection
+    def connect_musician():
+    	connection = None
+    	try:
+    		connection = psycopg2.connect(host="localhost", database="DB_course",
+    		user="musician", password="****")
+    		print("Connection of musician successful")
+    	except OperationalError as e:
+   			print("The error '{e}' occurred")
+    	return connection
+    def connect_owner():
+    	connection = None
+    	try:
+    		connection = psycopg2.connect(host="localhost", database="DB_course",
+    		user="base_owner", password="****")
+    		print("Connection of owner successful")
+    	except OperationalError as e:
+    		print(f"The error '{e}' occurred")
+    	return connection
+    def connect_admin():
+    	connection = None
+    	try:
+    		connection = psycopg2.connect(host="localhost", database="DB_course",
+    		user="app_admin", password="****")
+    		print("Connection of admin successful")
+    	except OperationalError as e:
+    		print(f"The error '{e}' occurred")
+    	return connection
+\end{lstlisting}
+
+\clearpage
+
+\specsection{ПРИЛОЖЕНИЕ Г} \label{app:proc}
+
+\begin{lstlisting}[caption={процедура удаления реп. базы}]
+    CREATE OR REPLACE PROCEDURE del_all(base_id int)
+    AS $$
+    	BEGIN
+    	delete from rehearsal where roomid in (select id from room where baseid = base_id);
+    	delete from equipment where roomid in (select id from room where baseid = base_id);
+    	delete from room where baseid = base_id;
+    	delete from reh_base where id = base_id;
+    	END;
+    $$ LANGUAGE PLPGSQL;
+\end{lstlisting}
+
+\clearpage
+
+\specsection{ПРИЛОЖЕНИЕ Д} \label{app:dell_all}
+
+\begin{lstlisting}[caption={применение процедуры при удалении реп. базы}]
+	def del_base(conn, base_id):
+		cur = conn.cursor()
+		query = "CALL del_all(%s)"
+		cur.execute(query, (base_id,))
+		conn.commit()
+		cur.close()
+\end{lstlisting}

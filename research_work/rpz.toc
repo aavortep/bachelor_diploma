@@ -1,0 +1,12 @@
+\babel@toc {russian}{}\relax 
+\contentsline {section}{Введение}{3}{table.caption.1}%
+\contentsline {section}{\numberline {1}Аналитическая часть}{4}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Темп, ритм и метр}{4}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Проблема определения ритма и темпа}{5}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Дискретное вейвлет-преобразование}{5}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Скрытые модели Маркова}{5}{subsection.1.4}%
+\contentsline {subsection}{\numberline {1.5}Байесовское иерархическое моделирование}{5}{subsection.1.5}%
+\contentsline {subsection}{\numberline {1.6}Использование сверточных нейросетей}{5}{subsection.1.6}%
+\contentsline {subsection}{\numberline {1.7}Сравнение методов}{5}{subsection.1.7}%
+\contentsline {section}{Заключение}{6}{subsection.1.7}%
+\contentsline {section}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}{7}{subsection.1.7}%
