@@ -49,8 +49,8 @@
 
 % Работа с изображениями и таблицами; переопределение названий по ГОСТу
 \usepackage{caption}
-\captionsetup[figure]{name={Рисунок},labelsep=endash}
-\captionsetup[table]{singlelinecheck=false, labelsep=endash}
+%\captionsetup[figure]{name={Рисунок},labelsep=endash}
+\captionsetup[table]{singlelinecheck=false, labelsep=endash, justification=raggedleft}
 
 \usepackage{graphicx}
 \usepackage{diagbox} % Диагональное разделение первой ячейки в таблицах
@@ -217,7 +217,7 @@
 \pagenumbering{arabic}
 \setcounter{page}{2}
 
-%\include{tex/abstract}
+\include{tex/abstract}
 
 \renewcommand{\contentsname}{\normalsize\bfseries\centering СОДЕРЖАНИЕ}
 \tableofcontents

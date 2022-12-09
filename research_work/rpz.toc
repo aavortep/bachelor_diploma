@@ -1,12 +1,20 @@
 \babel@toc {russian}{}\relax 
-\contentsline {section}{Введение}{3}{table.caption.1}%
-\contentsline {section}{\numberline {1}Аналитическая часть}{4}{section.1}%
-\contentsline {subsection}{\numberline {1.1}Темп, ритм и метр}{4}{subsection.1.1}%
-\contentsline {subsection}{\numberline {1.2}Проблема определения ритма и темпа}{5}{subsection.1.2}%
-\contentsline {subsection}{\numberline {1.3}Дискретное вейвлет-преобразование}{5}{subsection.1.3}%
-\contentsline {subsection}{\numberline {1.4}Скрытые модели Маркова}{5}{subsection.1.4}%
-\contentsline {subsection}{\numberline {1.5}Байесовское иерархическое моделирование}{5}{subsection.1.5}%
-\contentsline {subsection}{\numberline {1.6}Использование сверточных нейросетей}{5}{subsection.1.6}%
-\contentsline {subsection}{\numberline {1.7}Сравнение методов}{5}{subsection.1.7}%
-\contentsline {section}{Заключение}{6}{subsection.1.7}%
-\contentsline {section}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}{7}{subsection.1.7}%
+\contentsline {section}{Введение}{4}{table.caption.1}%
+\contentsline {section}{\numberline {1}Аналитическая часть}{5}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Темп, ритм и метр}{5}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Проблема определения ритма и темпа}{6}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Дискретное вейвлет-преобразование}{7}{subsection.1.3}%
+\contentsline {subsubsection}{\numberline {1.3.1}Общие сведения}{7}{subsubsection.1.3.1}%
+\contentsline {subsubsection}{\numberline {1.3.2}Определение ритма и темпа}{9}{subsubsection.1.3.2}%
+\contentsline {subsection}{\numberline {1.4}Скрытые модели Маркова}{10}{subsection.1.4}%
+\contentsline {subsubsection}{\numberline {1.4.1}Стохастическое моделирование}{10}{subsubsection.1.4.1}%
+\contentsline {subsubsection}{\numberline {1.4.2}Определение ритма}{12}{subsubsection.1.4.2}%
+\contentsline {subsection}{\numberline {1.5}Байесовское иерархическое моделирование}{12}{subsection.1.5}%
+\contentsline {subsubsection}{\numberline {1.5.1}Языковая модель}{12}{subsubsection.1.5.1}%
+\contentsline {subsubsection}{\numberline {1.5.2}Модель представления}{14}{subsubsection.1.5.2}%
+\contentsline {subsection}{\numberline {1.6}Использование сверточных нейросетей}{15}{subsection.1.6}%
+\contentsline {subsubsection}{\numberline {1.6.1}Представление сигнала}{15}{subsubsection.1.6.1}%
+\contentsline {subsubsection}{\numberline {1.6.2}Архитектура сети}{15}{subsubsection.1.6.2}%
+\contentsline {subsection}{\numberline {1.7}Сравнение методов}{17}{subsection.1.7}%
+\contentsline {section}{Заключение}{19}{table.caption.6}%
+\contentsline {section}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}{20}{table.caption.6}%
