@@ -18,3 +18,4 @@
 \contentsline {subsection}{\numberline {1.7}Сравнение методов}{17}{subsection.1.7}%
 \contentsline {section}{Заключение}{19}{table.caption.6}%
 \contentsline {section}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}{20}{table.caption.6}%
+\contentsline {section}{ПРИЛОЖЕНИЕ А}{22}{table.caption.6}%
