@@ -32,8 +32,8 @@
 % Переопределение их отступов до и после для 1.5 интервала во всем документе
 \usepackage{titlesec}
 
-\titleformat{\section}[block]
-{\bfseries\normalsize\filcenter}{\thesection}{1em}{}
+\titleformat{\section}
+{\normalsize\fontsize{20}{23}\filcenter\bfseries}{\thesection}{1em}{}
 
 \titleformat{\subsection}[hang]
 {\bfseries\normalsize}{\thesubsection}{1em}{}
@@ -47,12 +47,18 @@
 \newcommand{\specsubsection}[1]{\subsection*{#1}\addcontentsline{toc}{subsection}{#1}}
 \newcommand{\specsubsubsection}[1]{\subsubsection*{#1}\addcontentsline{toc}{subsubsection}{#1}}
 
-% Работа с изображениями и таблицами; переопределение названий по ГОСТу
-\usepackage{caption}
-%\captionsetup[figure]{name={Рисунок},labelsep=endash}
-\captionsetup[table]{singlelinecheck=false, labelsep=endash, justification=raggedleft}
 
 \usepackage{graphicx}
+
+% Работа с изображениями и таблицами; переопределение названий по ГОСТу
+\usepackage{caption}
+%\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+\renewcommand{\thefigure}{\arabic{section}.\arabic{figure}}
+\renewcommand{\thetable}{\arabic{section}.\arabic{table}}
+%\DeclareCaptionLabelFormat{custom}{#1 \arabic{chapter}.#2}
+\captionsetup[figure]{labelsep=endash}
+\captionsetup[table]{singlelinecheck=false, justification=raggedleft, labelsep=endash}
+
 \usepackage{diagbox} % Диагональное разделение первой ячейки в таблицах
 
 % Цвета для гиперссылок и листингов
@@ -162,9 +168,9 @@
 		\begin{flushleft}
 			\fontsize{12pt}{0.8\baselineskip}\selectfont 
 			
-			ФАКУЛЬТЕТ \uline{<<\textbf{Информатика и системы управления}>> \hfill}
+			ФАКУЛЬТЕТ \uline{<<Информатика и системы управления>> \hfill}
 			
-			КАФЕДРА \uline{\mbox{\hspace{4mm}} <<\textbf{Программное обеспечение ЭВМ и информационные технологии}>> \hfill}
+			КАФЕДРА \uline{\mbox{\hspace{4mm}} <<Программное обеспечение ЭВМ и информационные технологии>> \hfill}
 		\end{flushleft}
 		
 		\vfill
@@ -174,37 +180,39 @@
 			
 			\textbf{РАСЧЕТНО-ПОЯСНИТЕЛЬНАЯ ЗАПИСКА}
 			
-			\textbf{\textit{К НАУЧНО-ИССЛЕДОВАТЕЛЬСКОЙ РАБОТЕ}}
+			\textsl{К НАУЧНО-ИССЛЕДОВАТЕЛЬСКОЙ РАБОТЕ}
 			
-			\textbf{\textit{НА ТЕМУ:}}
+			\textsl{НА ТЕМУ:}
 		\end{center}
 		
 		\begin{center}
 			\fontsize{18pt}{0.6cm}\selectfont 
 			
-			\textit{<<Классификация методов определения ритмического рисунка и темпа цифровой музыкальной записи>>}
+			<<Классификация методов определения ритмического рисунка и темпа цифровой музыкальной записи>>
 			
 		\end{center}
 		
+		\vfill
+		\vfill
 		\vfill
 		
 		\begin{table}[h!]
 			\fontsize{12pt}{0.7\baselineskip}\selectfont
 			
 			\begin{signstabular}[0.55]{p{7.25cm} >{\centering\arraybackslash}p{4cm} >{\centering\arraybackslash}p{4cm}}
-				Студент \uline{~~ИУ7-76Б~~} & \uline{\mbox{\hspace*{4cm}}} & \uline{\hfill \textbf{А. А. Петрова} \hfill} \\
+				Студент \uline{~~ИУ7-76Б~~} & \uline{\mbox{\hspace*{4cm}}} & \uline{\hfill А. А. Петрова \hfill} \\
 				\scriptsize \hspace*{2cm}(Группа)	& \scriptsize (Подпись, дата) & \scriptsize (И.О. Фамилия)
 			\end{signstabular}
 			
 			\vspace{\baselineskip}
 			
 			\begin{signstabular}[0.55]{p{7.25cm} >{\centering\arraybackslash}p{4cm} >{\centering\arraybackslash}p{4cm}}
-				Руководитель & \uline{\mbox{\hspace*{4cm}}} & \uline{\hfill \textbf{К. А. Кивва} \hfill} \\
+				Руководитель & \uline{\mbox{\hspace*{4cm}}} & \uline{\hfill К. А. Кивва \hfill} \\
 				& \scriptsize (Подпись, дата) & \scriptsize (И.О. Фамилия)
 			\end{signstabular}
 		\end{table}
 		
-		\vfill
+		%\vfill
 		
 		\begin{center}
 			\normalsize \textit{2022 г.}
@@ -215,7 +223,7 @@
 %\include{tex/tz.tex}
 \normalsize
 \pagenumbering{arabic}
-\setcounter{page}{2}
+\setcounter{page}{3}
 
 \include{tex/abstract}
 
