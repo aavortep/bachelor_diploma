@@ -3,6 +3,7 @@ import pandas as pd
 import arviz as az
 import librosa
 from scipy import stats
+import numpy as np
 
 
 def calc_measure(downbeats: list) -> int:
@@ -54,28 +55,44 @@ def estimate_rhythm(audio_path: str) -> int:
     return avg_measure
 
 
-def estimate_bpm(audio_path: str, bpm_dataset) -> float:
+def genres_to_ints(genre_dataset):
+    all_genres = genre_dataset.unique()
+    genres_dict = {}
+    for i, genre in enumerate(all_genres):
+        genres_dict[genre] = i
+    genres_ints = np.array([0] * len(genre_dataset))
+    for i, genre in enumerate(genre_dataset.values):
+        genres_ints[i] = genres_dict[genre]
+    return genres_ints
+
+
+def estimate_bpm(audio_path: str, bpm_dataset, genre_dataset) -> float:
     y, sr = librosa.load(audio_path)
     spectr = librosa.feature.melspectrogram(y=y, sr=sr)
     autocorr = librosa.autocorrelate(spectr)
-    min_bpm = 40
-    max_bpm = 260
+    min_bpm = 20
+    max_bpm = 220
     # диапазон bpm для конкретного аудиофайла
     tempos = librosa.tempo_frequencies(len(autocorr))
+    # обозначение жанров числами
+    genres_ints = genres_to_ints(genre_dataset)
 
     with pm.Model() as model:
-        # define the prior
+        # hyperpriors (lvl 1)
         tempo = pm.Uniform('tempo', lower=min_bpm, upper=max_bpm)
-        # mu = pm.Normal('mu', mu=120, sd=10)
-        # sigma = pm.HalfNormal('sigma', sd=10)
+        mu = (min_bpm + max_bpm) / 2.0
+        sigma = (max_bpm - min_bpm) / 12.0
+        genre_coef = pm.Normal('genre_coef', mu=0, sd=1, shape=len(genre_dataset.unique()))
 
-        # define the likelihood
-        bpm_obs = pm.Normal('bpm_obs', mu=(min_bpm + max_bpm) / 2.0, sd=(max_bpm - min_bpm) / 12.0,
-                            observed=bpm_dataset)
+        # prior (lvl 2)
+        bpm_est = mu + genre_coef[genres_ints] * sigma
+
+        # likelihood (lvl 3)
+        bpm_obs = pm.Normal('bpm_obs', mu=bpm_est, sd=sigma, observed=bpm_dataset)
         # bpm_obs = pm.Normal('bpm_obs', mu=mu, sd=sigma, observed=spotify_data['tempo'])
 
         # get the samples
-        trace = pm.sample(1000, tune=1000, chains=2)
+        trace = pm.sample(1000, tune=500, chains=2, cores=1)
 
     # Визуализация результатов
     az.plot_posterior(trace, hdi_prob=0.99, show=True)
@@ -94,5 +111,5 @@ if __name__ == "__main__":
     spotify_data = pd.read_csv('tempo_dataset.csv')
     music = 'test_audio/vo_sne.mp3'
 
-    print('Estimated tempo: ', estimate_bpm(music, spotify_data['tempo']))
-    print('Estimated time signature: ', estimate_rhythm(music))
+    print('Estimated tempo: ', estimate_bpm(music, spotify_data['tempo'], spotify_data['track_genre']))
+    #print('Estimated time signature: ', estimate_rhythm(music))
