@@ -5,6 +5,15 @@ import librosa
 from scipy import stats
 
 
+def calc_measure(downbeats: list) -> int:
+    downbeat_inds = [i for i, beat in enumerate(downbeats) if beat == 1]
+    difs_sum = 0
+    for i in range(1, len(downbeat_inds)):
+        difs_sum += (downbeat_inds[i] - downbeat_inds[i - 1])
+    avg_measure = difs_sum / (len(downbeat_inds) - 1)
+    return round(avg_measure)
+
+
 def estimate_rhythm(audio_path: str) -> int:
     y, sr = librosa.load(audio_path)
 
@@ -18,22 +27,31 @@ def estimate_rhythm(audio_path: str) -> int:
     _, beats = librosa.beat.beat_track(onset_envelope=onset_env, sr=sr)
     # beat_strengths = onset_env[beats]
     beats_time = librosa.frames_to_time(beats, sr=sr)
-    # начала тактов
-    downbeats = {}
+    # предположительные начала тактов
+    downbeat_times = {}
     for i, beat in enumerate(beats_time):
         if beat in peaks_time:
-            downbeats[i] = beat
+            downbeat_times[i] = beat
     # print(downbeats)
+    downbeats = [0 for i in range(len(beats))]
+    for beat in downbeat_times.keys():
+        downbeats[beat] = 1
 
-    downbeats_nums = sorted(list(downbeats.keys()))
-    difs_sum = 0
-    for i in range(1, len(downbeats_nums)):
-        difs_sum += downbeats_nums[i] - downbeats_nums[i - 1]
+    with pm.Model() as model:
+        downbeat_prob = pm.Beta('downbeat_prob', alpha=2, beta=2)
+        # вероятностная модель для генерации начала такта
+        downbeats_obs = pm.Bernoulli('downbeats_obs', p=downbeat_prob, shape=len(beats), observed=downbeats)
+        trace = pm.sample(1000, tune=1000, chains=2)
 
-    # среднее число ударов в такте (средний размер)
-    avg_measure = difs_sum / (len(downbeats_nums) - 1)
+    az.plot_posterior(trace, hdi_prob=0.99, show=True)
 
-    return round(avg_measure)+1
+    downbeat_prob_samples = trace['downbeat_prob']
+    density = stats.gaussian_kde(downbeat_prob_samples)
+    prob_estimate = downbeat_prob_samples[density(downbeat_prob_samples).argmax()]
+    new_downbeats = stats.bernoulli.rvs(prob_estimate, size=len(beats))
+
+    avg_measure = calc_measure(list(new_downbeats))
+    return avg_measure
 
 
 def estimate_bpm(audio_path: str, bpm_dataset) -> float:
@@ -74,7 +92,7 @@ def estimate_bpm(audio_path: str, bpm_dataset) -> float:
 if __name__ == "__main__":
     # загрузка данных
     spotify_data = pd.read_csv('tempo_dataset.csv')
-    music = 'test_audio/vo_sne_guitars.mp3'
+    music = 'test_audio/vo_sne.mp3'
 
     print('Estimated tempo: ', estimate_bpm(music, spotify_data['tempo']))
     print('Estimated time signature: ', estimate_rhythm(music))
