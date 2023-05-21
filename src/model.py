@@ -66,16 +66,24 @@ def genres_to_ints(genre_dataset):
     return genres_ints
 
 
-def estimate_bpm(audio_path: str, bpm_dataset, genre_dataset) -> float:
+def get_tempo_bounds(bpm_dataset, genre_dataset, track_genre: str):
+    rows_num = [i for i in range(len(genre_dataset)) if genre_dataset.values[i] == track_genre]
+    tempos = [bpm_dataset.values[i] for i in rows_num]
+    max_bpm = max(tempos)
+    min_bpm = min(tempos)
+    return min_bpm, max_bpm
+
+
+def estimate_bpm(audio_path: str, bpm_dataset, genre_dataset, track_genre: str) -> float:
     y, sr = librosa.load(audio_path)
     spectr = librosa.feature.melspectrogram(y=y, sr=sr)
     autocorr = librosa.autocorrelate(spectr)
-    min_bpm = 20
-    max_bpm = 220
+    min_bpm, max_bpm = get_tempo_bounds(bpm_dataset, genre_dataset, track_genre)
     # диапазон bpm для конкретного аудиофайла
     tempos = librosa.tempo_frequencies(len(autocorr))
     # обозначение жанров числами
     genres_ints = genres_to_ints(genre_dataset)
+    genre_int = np.where(genre_dataset.unique() == track_genre)[0][0]
 
     with pm.Model() as model:
         # hyperpriors (lvl 1)
@@ -95,13 +103,20 @@ def estimate_bpm(audio_path: str, bpm_dataset, genre_dataset) -> float:
         trace = pm.sample(1000, tune=500, chains=2, cores=1)
 
     # Визуализация результатов
-    az.plot_posterior(trace, hdi_prob=0.99, show=True)
+    # az.plot_posterior(trace, hdi_prob=0.99, show=True)
+
+    genres_samples = trace['genre_coef']
+    genre_coef_samples = [genres_samples[i][genre_int] for i in range(len(genres_samples))]
+    # оценка функции плотности распределения genre_coef_samples
+    density = stats.gaussian_kde(genre_coef_samples)
+    # наибольшая плотность - наиболее вероятный коэффициент
+    coef_estimate = genre_coef_samples[density(genre_coef_samples).argmax()]
+    print(coef_estimate)
+    sigma = (max_bpm - min_bpm) / 12.0
 
     tempo_samples = trace['tempo']
-    # оценка функции плотности распределения tempo_samples
     density = stats.gaussian_kde(tempo_samples)
-    # наибольшая плотность - наиболее вероятный темп
-    bpm_estimate = tempos[density(tempos).argmax()]
+    bpm_estimate = tempos[density(tempos).argmax()] + coef_estimate * sigma
 
     return float(bpm_estimate)
 
@@ -109,7 +124,9 @@ def estimate_bpm(audio_path: str, bpm_dataset, genre_dataset) -> float:
 if __name__ == "__main__":
     # загрузка данных
     spotify_data = pd.read_csv('tempo_dataset.csv')
-    music = 'test_audio/vo_sne.mp3'
+    music = 'test_audio/vo_sne_guitars.mp3'
+    genre = 'alt-rock'
+    # print(get_tempo_bounds(spotify_data['tempo'], spotify_data['track_genre'], genre))
 
-    print('Estimated tempo: ', estimate_bpm(music, spotify_data['tempo'], spotify_data['track_genre']))
-    #print('Estimated time signature: ', estimate_rhythm(music))
+    print('Estimated tempo: ', estimate_bpm(music, spotify_data['tempo'], spotify_data['track_genre'], genre))
+    # print('Estimated time signature: ', estimate_rhythm(music))
