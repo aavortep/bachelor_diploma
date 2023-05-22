@@ -27,14 +27,14 @@ def get_tempo_bounds(bpm_dataset, genre_dataset, track_genre: str):
     return min_bpm, max_bpm
 
 
-def estimate_bpm(audio_path: str, bpm_dataset, genre_dataset, track_genre: str, step: int) -> dict:
+def estimate_bpm(audio_path: str, bpm_dataset, genre_dataset, track_genre: str, step: int, progress) -> dict:
     # диапазон bpm для аудиофайла
     min_bpm, max_bpm = get_tempo_bounds(bpm_dataset, genre_dataset, track_genre)
     # обозначение жанров числами
     genres_ints = genres_to_ints(genre_dataset)
 
     # байесовское моделирование для темпа
-    trace = bpm_model(min_bpm, max_bpm, bpm_dataset, genre_dataset, genres_ints)
+    trace = bpm_model(min_bpm, max_bpm, bpm_dataset, genre_dataset, genres_ints, progress)
 
     split_mp3(audio_path, step)
     bpms = []
@@ -118,10 +118,10 @@ def get_measure_range(audio_path: str, tail: list):
         return 0, np.arange(prior_measure, prior_measure + 3, 1)
 
 
-def estimate_rhythm(audio_path: str, rhythm_dataset, step: int) -> dict:
+def estimate_rhythm(audio_path: str, rhythm_dataset, step: int, progress) -> dict:
     # байесовское моделирование для ритма
     _, prior_range = get_measure_range(audio_path, [])
-    trace = rhythm_model(prior_range[0], prior_range[-1], rhythm_dataset)
+    trace = rhythm_model(prior_range[0], prior_range[-1], rhythm_dataset, progress)
 
     split_mp3(audio_path, step)
     measures = []

@@ -1,5 +1,5 @@
 from PyQt6 import QtWidgets
-from PyQt6.QtWidgets import QTableWidgetItem, QFileDialog
+from PyQt6.QtWidgets import QTableWidgetItem, QFileDialog, QMessageBox
 from gui import Ui_MainWindow
 import sys
 import pandas as pd
@@ -33,20 +33,35 @@ class MyWindow(QtWidgets.QMainWindow):
             self.ui.loadButton.setText(audio_name)
 
     def est_tempo(self):
-        genre = self.ui.genreBox.currentText()
-        tempos = estimate_bpm(self.audio_path, self.spotify_data['tempo'], self.spotify_data['track_genre'],
-                              genre, 5000)
-        self.ui.tempoTable.setRowCount(len(tempos))
-        for i, time in enumerate(tempos):
-            self.ui.tempoTable.setItem(i, 0, QTableWidgetItem(str(time)))
-            self.ui.tempoTable.setItem(i, 1, QTableWidgetItem(str(tempos[time])))
+        if self.audio_path == "":
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Icon.Critical)
+            msg.setText("Не выбран аудиофайл")
+            msg.setWindowTitle("Ошибка")
+            msg.exec()
+        else:
+            genre = self.ui.genreBox.currentText()
+            tempos = estimate_bpm(self.audio_path, self.spotify_data['tempo'], self.spotify_data['track_genre'],
+                                  genre, 5000, self.ui.progressBar)
+            self.ui.tempoTable.setRowCount(len(tempos))
+            for i, time in enumerate(tempos):
+                self.ui.tempoTable.setItem(i, 0, QTableWidgetItem(str(time)))
+                self.ui.tempoTable.setItem(i, 1, QTableWidgetItem(str(tempos[time])))
 
     def est_measure(self):
-        measures = estimate_rhythm(self.audio_path, self.spotify_data['time_signature'], 5000)
-        self.ui.measureTable.setRowCount(len(measures))
-        for i, time in enumerate(measures):
-            self.ui.measureTable.setItem(i, 0, QTableWidgetItem(str(time)))
-            self.ui.measureTable.setItem(i, 1, QTableWidgetItem(str(measures[time]) + "/4"))
+        if self.audio_path == "":
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Icon.Critical)
+            msg.setText("Не выбран аудиофайл")
+            msg.setWindowTitle("Ошибка")
+            msg.exec()
+        else:
+            measures = estimate_rhythm(self.audio_path, self.spotify_data['time_signature'],
+                                       5000, self.ui.progressBar)
+            self.ui.measureTable.setRowCount(len(measures))
+            for i, time in enumerate(measures):
+                self.ui.measureTable.setItem(i, 0, QTableWidgetItem(str(time)))
+                self.ui.measureTable.setItem(i, 1, QTableWidgetItem(str(measures[time]) + "/4"))
 
 
 if __name__ == '__main__':
