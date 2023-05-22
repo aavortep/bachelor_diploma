@@ -27,8 +27,7 @@ def get_tempo_bounds(bpm_dataset, genre_dataset, track_genre: str):
     return min_bpm, max_bpm
 
 
-def estimate_bpm(audio_path: str, bpm_dataset, genre_dataset, track_genre: str) -> dict:
-    step = 2000
+def estimate_bpm(audio_path: str, bpm_dataset, genre_dataset, track_genre: str, step: int) -> dict:
     # диапазон bpm для аудиофайла
     min_bpm, max_bpm = get_tempo_bounds(bpm_dataset, genre_dataset, track_genre)
     # обозначение жанров числами
@@ -43,10 +42,10 @@ def estimate_bpm(audio_path: str, bpm_dataset, genre_dataset, track_genre: str) 
     t = 0
     for audio in os.listdir("tmp/"):
         y, sr = librosa.load("tmp/" + audio)
-        spectr = librosa.feature.melspectrogram(y=y, sr=sr)
-        autocorr = librosa.autocorrelate(spectr)
-        tempos = librosa.tempo_frequencies(len(autocorr))
         genre_int = np.where(genre_dataset.unique() == track_genre)[0][0]
+        delta = 40
+        prior_bpm, _ = librosa.beat.beat_track(y=y, sr=sr)
+        tempos = np.arange(prior_bpm - delta, prior_bpm + delta, 0.5)
 
         genres_samples = trace['genre_coef']
         genre_coef_samples = [genres_samples[i][genre_int] for i in range(len(genres_samples))]
@@ -86,8 +85,7 @@ def calc_measure(downbeats: list) -> int:
     return round(avg_measure)
 
 
-def estimate_rhythm(audio_path: str) -> dict:
-    step = 10000  # длина частей аудио в мс
+def estimate_rhythm(audio_path: str, step: int) -> dict:
     split_mp3(audio_path, step)
     measures = []
     times = []
@@ -144,8 +142,9 @@ def estimate_rhythm(audio_path: str) -> dict:
 if __name__ == "__main__":
     # загрузка данных
     spotify_data = pd.read_csv('tempo_dataset.csv')
-    music = 'test_audio/chop.mp3'
+    music = 'test_audio/toxicity.mp3'
     genre = 'metal'
 
-    print('Estimated tempo: ', estimate_bpm(music, spotify_data['tempo'], spotify_data['track_genre'], genre))
-    #print('Estimated time signature: ', estimate_rhythm(music))
+    print('Estimated tempo: ', estimate_bpm(music, spotify_data['tempo'], spotify_data['track_genre'],
+                                            genre, 5000))
+    print('Estimated time signature: ', estimate_rhythm(music, 30000))
