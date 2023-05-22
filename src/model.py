@@ -1,11 +1,26 @@
 import pymc3 as pm
 
 
-def rhythm_model(beats, downbeats):
+def calc_measure(downbeats: list) -> int:
+    print(downbeats)
+    downbeat_inds = [i for i, beat in enumerate(downbeats) if beat == 1]
+    difs_sum = 0
+    for i in range(1, len(downbeat_inds)):
+        difs_sum += (downbeat_inds[i] - downbeat_inds[i - 1])
+    avg_measure = difs_sum / (len(downbeat_inds) - 1)
+    return round(avg_measure)
+
+
+def rhythm_model(measure_min, measure_max, rhythm_dataset):
     with pm.Model() as model:
-        downbeat_prob = pm.Beta('downbeat_prob', alpha=2, beta=2)
-        # вероятностная модель для генерации начала такта
-        downbeats_obs = pm.Bernoulli('downbeats_obs', p=downbeat_prob, shape=len(beats), observed=downbeats)
+        # prior
+        measure = pm.Uniform('measure', lower=measure_min, upper=measure_max)
+        mu = (measure_min + measure_max) / 2.0
+        sigma = (measure_max - measure_min) / 12.0
+
+        # likelihood
+        measure_obs = pm.Normal('measure_obs', mu=mu, sd=sigma, observed=rhythm_dataset)
+
         trace = pm.sample(1000, tune=1000, chains=2)
 
     return trace
