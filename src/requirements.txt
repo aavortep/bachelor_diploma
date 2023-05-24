@@ -1,0 +1,9 @@
+pydub
+mido
+pandas
+librosa
+scipy
+numpy
+pymc3
+matplotlib
+PyQt6
