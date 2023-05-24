@@ -1,0 +1,10 @@
+\babel@toc {russian}{}\relax 
+\contentsline {section}{ВВЕДЕНИЕ}{4}{table.caption.1}%
+\contentsline {section}{\numberline {1}Основная часть}{5}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Постановка задачи}{5}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Этапы работы метода}{5}{subsection.1.2}%
+\contentsline {subsubsection}{\numberline {1.2.1}Определение темпа}{5}{subsubsection.1.2.1}%
+\contentsline {subsubsection}{\numberline {1.2.2}Определение ритма}{8}{subsubsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.3}Исходные коды и интерфейс}{11}{subsection.1.3}%
+\contentsline {section}{ЗАКЛЮЧЕНИЕ}{13}{figure.caption.10}%
+\contentsline {section}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}{14}{figure.caption.10}%
