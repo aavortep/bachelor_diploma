@@ -1,21 +1,31 @@
 \babel@toc {russian}{}\relax 
 \contentsline {section}{РЕФЕРАТ}{3}{table.caption.1}%
-\contentsline {section}{ВВЕДЕНИЕ}{5}{table.caption.1}%
-\contentsline {section}{\numberline {1}Аналитическая часть}{6}{section.1}%
-\contentsline {subsection}{\numberline {1.1}Темп, ритм и метр}{6}{subsection.1.1}%
-\contentsline {subsection}{\numberline {1.2}Проблема определения ритма и темпа}{7}{subsection.1.2}%
-\contentsline {subsection}{\numberline {1.3}Дискретное вейвлет-преобразование}{8}{subsection.1.3}%
-\contentsline {subsubsection}{\numberline {1.3.1}Общие сведения}{8}{subsubsection.1.3.1}%
-\contentsline {subsubsection}{\numberline {1.3.2}Определение ритма и темпа}{10}{subsubsection.1.3.2}%
-\contentsline {subsection}{\numberline {1.4}Скрытые модели Маркова}{11}{subsection.1.4}%
-\contentsline {subsubsection}{\numberline {1.4.1}Стохастическое моделирование}{11}{subsubsection.1.4.1}%
-\contentsline {subsubsection}{\numberline {1.4.2}Определение ритма}{13}{subsubsection.1.4.2}%
-\contentsline {subsection}{\numberline {1.5}Байесовское иерархическое моделирование}{13}{subsection.1.5}%
-\contentsline {subsubsection}{\numberline {1.5.1}Языковая модель}{13}{subsubsection.1.5.1}%
-\contentsline {subsubsection}{\numberline {1.5.2}Модель представления}{15}{subsubsection.1.5.2}%
-\contentsline {subsection}{\numberline {1.6}Использование сверточных нейросетей}{16}{subsection.1.6}%
-\contentsline {subsubsection}{\numberline {1.6.1}Представление сигнала}{16}{subsubsection.1.6.1}%
-\contentsline {subsubsection}{\numberline {1.6.2}Архитектура сети}{16}{subsubsection.1.6.2}%
-\contentsline {subsection}{\numberline {1.7}Сравнение методов}{17}{subsection.1.7}%
-\contentsline {section}{ЗАКЛЮЧЕНИЕ}{20}{table.caption.6}%
-\contentsline {section}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}{21}{table.caption.6}%
+\contentsline {section}{ВВЕДЕНИЕ}{6}{table.caption.1}%
+\contentsline {section}{\numberline {1}Аналитический раздел}{7}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Темп, ритм и метр}{7}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Проблема определения ритма и темпа}{8}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Дискретное вейвлет-преобразование}{9}{subsection.1.3}%
+\contentsline {subsubsection}{\numberline {1.3.1}Общие сведения}{9}{subsubsection.1.3.1}%
+\contentsline {subsubsection}{\numberline {1.3.2}Определение ритма и темпа}{11}{subsubsection.1.3.2}%
+\contentsline {subsection}{\numberline {1.4}Скрытые модели Маркова}{12}{subsection.1.4}%
+\contentsline {subsubsection}{\numberline {1.4.1}Стохастическое моделирование}{12}{subsubsection.1.4.1}%
+\contentsline {subsubsection}{\numberline {1.4.2}Определение ритма}{14}{subsubsection.1.4.2}%
+\contentsline {subsection}{\numberline {1.5}Байесовское иерархическое моделирование}{14}{subsection.1.5}%
+\contentsline {subsubsection}{\numberline {1.5.1}Общие сведения}{14}{subsubsection.1.5.1}%
+\contentsline {subsubsection}{\numberline {1.5.2}Определение темпа и ритма}{15}{subsubsection.1.5.2}%
+\contentsline {subsection}{\numberline {1.6}Использование сверточных нейросетей}{17}{subsection.1.6}%
+\contentsline {subsubsection}{\numberline {1.6.1}Представление сигнала}{17}{subsubsection.1.6.1}%
+\contentsline {subsubsection}{\numberline {1.6.2}Архитектура сети}{17}{subsubsection.1.6.2}%
+\contentsline {subsection}{\numberline {1.7}Сравнение методов}{19}{subsection.1.7}%
+\contentsline {section}{\numberline {2}Конструкторский раздел}{22}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Определение переменного темпа}{22}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Определение переменного тактового размера}{26}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Структуры данных}{29}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Структура ПО}{29}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Технологический раздел}{31}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Выбор средств программной реализации}{31}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Детали реализации}{31}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Пользовательский интерфейс}{32}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Тестирование приложения}{32}{subsection.3.4}%
+\contentsline {section}{ЗАКЛЮЧЕНИЕ}{33}{subsection.3.4}%
+\contentsline {section}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}{34}{subsection.3.4}%

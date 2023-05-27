@@ -1,6 +1,6 @@
-\section{Технологическая часть}
+\section{Технологический раздел}
 
-\subsection{Выбор СУБД}
+\subsection{Выбор средств программной реализации}
 
 В таблице \ref{tab:subd} произведено сравнение наиболее популярных СУБД, которые могут быть использованы для реализации хранения данных в разрабатываемом программном продукте.
 
@@ -26,77 +26,21 @@
 
 Таким образом, для реализации проекта в качестве СУБД будет использоваться PostgreSQL, так как он является свободно распространяемым и удовлетворяет всем необходимым требованиям в рамках поставленной задачи.
 
-\subsection{Выбор ЯП и среды программирования}
-
-Для реализации проекта в качестве языка программирования был выбран язык Python, так как:
-\begin{itemize}
-	\item этот язык поддерживает работу с PostgreSQL (в моём случае для этого будет использоваться библиотека psycopg2);
-	\item данный язык является полностью объектно-ориентированным (всё является объектами) \cite{python}, что позволяет в полной мере использовать классы при написании программы;
-	\item в этом языке присутствует PyQt (набор расширений графического фреймворка Qt для языка программирования Python, выполненный в виде расширения Python \cite{pyqt}), позволяющий легко создавать графический интерфейс для приложения.
-\end{itemize}
-
-В качестве среды разработки был выбран PyCharm по следующим причинам:
-\begin{itemize}
-	\item наличие бесплатной версии Community Edition;
-	\item множество удобств, облегчающих процесс написания и отладки кода.
-\end{itemize}
-
 \subsection{Детали реализации}
+
 В приложениях А -- Б представлен пример реализации frontend части приложения.
 
 В приложении В представлена реализация соединения с базой данных в соответствии с ролевой моделью.
 
 Помимо этого, на уровне базы данных была реализована процедура, необходимая для удаления реп. базы (приложения Г – Д).
 
-%\subsection{Интерфейс программы}
+\subsection{Пользовательский интерфейс}
 
 На рисунках ниже представлен основной интерфейс приложения.
 
-\begin{figure}[h!]
-	\begin{center}
-		\includegraphics[scale=1]{jpg/Welcome.jpg}
-	\end{center}
-	\captionsetup{justification=centering}
-	\caption{Окно с приглашением}
-\end{figure}
+TODO
 
-\newpage
-
-\begin{figure}[h!]
-	\begin{center}
-		\includegraphics[scale=0.4]{jpg/Reg.jpg}
-	\end{center}
-	\captionsetup{justification=centering}
-	\caption{Окно регистрации}
-\end{figure}
-
-\begin{figure}[h!]
-	\begin{center}
-		\includegraphics[scale=0.35]{jpg/Musician.jpg}
-	\end{center}
-	\captionsetup{justification=centering}
-	\caption{Интерфейс при входе в качестве музыканта}
-\end{figure}
-
-\newpage
-
-\begin{figure}[h!]
-	\begin{center}
-		\includegraphics[scale=0.3]{jpg/Owner.jpg}
-	\end{center}
-	\captionsetup{justification=centering}
-	\caption{Интерфейс при входе в качестве владельца}
-\end{figure}
-
-\begin{figure}[h!]
-	\begin{center}
-		\includegraphics[scale=0.3]{jpg/Admin.jpg}
-	\end{center}
-	\captionsetup{justification=centering}
-	\caption{Интерфейс при входе в качестве администратора}
-\end{figure}
-
-\newpage
+\subsection{Тестирование приложения}
 
 \subsection*{Выводы}
 
