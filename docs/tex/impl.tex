@@ -2,68 +2,253 @@
 
 \subsection{Выбор средств программной реализации}
 
-В таблице \ref{tab:subd} произведено сравнение наиболее популярных СУБД, которые могут быть использованы для реализации хранения данных в разрабатываемом программном продукте.
+В качестве языка программирования был выбран Python, так как:
 
-\begin{table}[!h]
-	\captionsetup{justification=centering}
-	\caption{\label{tab:subd} Особенности различных СУБД}
-	\begin{center}
-		\begin{tabular}{|p{0.15\textwidth}|p{0.2\textwidth}|p{0.15\textwidth}|p{0.15\textwidth}|p{0.15\textwidth}|}
-			\hline
-			\textbf{Особенность} & \textbf{MySQL} & \textbf{PostgreSQL} & \textbf{MS SQL Server} & \textbf{Oracle Database} \\
-			\hline
-			Open source & GNU GPL с открытым исходным кодом & Открытый исходный код & Коммерческая & Коммерческая\\
-			\hline
-			Соответствие ACID & Частичное (зависит от версии) \cite{acid} & Полное & Полное & Полное\\
-			\hline
-			NoSQL / JSON & Поддержка некоторых функций & JSON, NoSQL & JSON, NoSQL & JSON, NoSQL\\
-			\hline
-			Поддержка MERGE & Да & Нет & Да & Да\\
-			\hline
-		\end{tabular}
-	\end{center}
-\end{table}
+\begin{itemize}
+	\item имеется достаточный опыт программирования на этом языке, что сократит время написания программы;
+	\item данный язык программирования содержит в себе все необходимые библиотеки для работы с байесовскими моделями и аудиофайлами, что также ускорит процесс разработки.
+\end{itemize}
 
-Таким образом, для реализации проекта в качестве СУБД будет использоваться PostgreSQL, так как он является свободно распространяемым и удовлетворяет всем необходимым требованиям в рамках поставленной задачи.
+В качестве среды разработки был выбран PyCharm по следующим причинам:
+
+\begin{itemize}
+	\item он бесплатен в пользовании студентами;
+	\item он имеет множество удобств, которые облегчают процесс написания и отладки кода;
+	\item имеется достаточный опыт программирования при помощи данной среды разработки, что сократит время изучения возможностей.
+\end{itemize}
+
+Для работы с аудиофайлами использовалась библиотека librosa~\cite{librosa}, а для реализации байесовских моделей -- библиотека PyMC3~\cite{pymc3_docs}. Кроме того в программе вместо обычных списков часто использовались numpy массивы~\cite{numpy} в целях более удобной работы с ними.
 
 \subsection{Детали реализации}
 
-В приложениях А -- Б представлен пример реализации frontend части приложения.
+\subsubsection{Байесовские модели}
 
-В приложении В представлена реализация соединения с базой данных в соответствии с ролевой моделью.
+В листингах \ref{lst:bpmmodel}, \ref{lst:measuremodel} представлена реализация байесовских иерархических моделей для оценки темпа и тактового размера соответственно.
 
-Помимо этого, на уровне базы данных была реализована процедура, необходимая для удаления реп. базы (приложения Г – Д).
+\begin{lstlisting}[label={lst:bpmmodel}, caption={реализация байесовской модели для определения темпа}]
+	def bpm_model(min_bpm: int, max_bpm: int, bpm_dataset, genre_dataset, genres_ints, progress):
+		with pm.Model() as model:
+			# hyperpriors (lvl 1)
+\end{lstlisting}
+
+\begin{lstlisting}
+			tempo = pm.Uniform('tempo', lower=min_bpm, upper=max_bpm)
+			progress.setValue(20)
+			mu = (min_bpm + max_bpm) / 2.0
+			sigma = (max_bpm - min_bpm) / 12.0
+			genre_coef = pm.Normal('genre_coef', mu=0, sd=1, shape=len(genre_dataset.unique()))
+			progress.setValue(40)
+	
+			# prior (lvl 2)
+			bpm_est = mu + genre_coef[genres_ints] * sigma
+			progress.setValue(60)
+	
+			# likelihood (lvl 3)
+			bpm_obs = pm.Normal('bpm_obs', mu=bpm_est, sd=sigma, observed=bpm_dataset)
+			progress.setValue(80)
+	
+			# get the samples
+			trace = pm.sample(1000, tune=500, chains=2, cores=1)
+			progress.setValue(100)
+	
+		return trace
+\end{lstlisting}
+
+\begin{lstlisting}[label={lst:measuremodel}, caption={реализация байесовской модели для определения ритма}]
+	def rhythm_model(measure_min, measure_max, rhythm_dataset, progress):
+		with pm.Model() as model:
+			# prior
+			measure = pm.Uniform('measure', lower=measure_min, upper=measure_max)
+			progress.setValue(20)
+			mu = (measure_min + measure_max) / 2.0
+			progress.setValue(40)
+			sigma = (measure_max - measure_min) / 12.0
+			progress.setValue(60)
+	
+			# likelihood
+			measure_obs = pm.Normal('measure_obs', mu=mu, sd=sigma, observed=rhythm_dataset)
+			progress.setValue(80)
+\end{lstlisting}
+
+\begin{lstlisting}
+			trace = pm.sample(1000, tune=1000, chains=2)
+			progress.setValue(100)
+	
+		return trace
+\end{lstlisting}
+
+На вход моделей поступают границы темпа или размера, массив значений из датасета (для оценки темпа -- это темпы и жанры, для ритма -- размеры), список жанров, закодированных числами (для темпа) (для размещения коэффициентов по индексам жанров) и линия прогресса из интерфейса для ее обновления.
+
+Выходными данными указанных функций являются распределения соответствующих параметров (в первом случае -- это темп и коэффициенты для всех жанров, а во втором -- тактовый размер).
+
+Метод sample отвечает за сам процесс моделирования (получения апостериорных распределений).
+
+\subsubsection{Разделение аудиофайла}
+
+В листинге \ref{lst:splitaudio} представлена реализация функции разделения аудиофайла на фрагменты.
+
+\begin{lstlisting}[label={lst:splitaudio}, caption={разделение аудиофайла на фрагменты}]
+	def split_mp3(audio_path: str, step: int):
+		if not os.path.isdir("tmp"):
+			os.mkdir("tmp")
+		# load audio
+		audio_file = AudioSegment.from_file(audio_path, format="mp3")
+		# fragments length in milliseconds
+		part_length = step
+		# split audio
+		parts = [audio_file[i:i + part_length] for i in range(0, len(audio_file), part_length)]
+		# save fragments
+		for i, part in enumerate(parts):
+			part.export(f"tmp/part_{i}.mp3", format="mp3")
+\end{lstlisting}
+
+Функция создает временную директорию <<tmp/>>, в которую впоследствии сохраняет фрагменты указанного аудиофайла в формате mp3. После расчета темпов или размеров для всех фрагментов созданная директория очищается и удаляется.
+
+\subsubsection{Определение диапазона размеров}
+
+В листинге~\ref{lst:measurerange} представлена реализация функций для расчета диапазона размеров.
+
+\begin{lstlisting}[label={lst:measurerange}, caption={определение диапазона размеров}]
+	def calc_measure(downbeats: list) -> int:
+		downbeat_inds = [i for i, beat in enumerate(downbeats) if beat == 1]
+		if len(downbeat_inds) <= 1:
+			return 0
+		difs_sum = 0
+		for i in range(1, len(downbeat_inds)):
+			difs_sum += (downbeat_inds[i] - downbeat_inds[i - 1])
+		avg_measure = difs_sum / (len(downbeat_inds) - 1)
+		return round(avg_measure)
+	
+	def get_measure_range(audio_path: str, tail: list):
+		y, sr = librosa.load(audio_path)
+		onset_env = librosa.onset.onset_strength(y=y, sr=sr)
+		# amplitude peaks
+		peaks = librosa.util.peak_pick(onset_env, pre_max=3, post_max=3, pre_avg=3,
+		post_avg=5, delta=0.5, wait=10)
+		peaks_time = librosa.frames_to_time(peaks, sr=sr)
+		_, beats = librosa.beat.beat_track(onset_envelope=onset_env, sr=sr)
+		beats_time = librosa.frames_to_time(beats, sr=sr)
+		# beginnings of bars
+		downbeat_times = {}
+		for i, beat in enumerate(beats_time):
+			if beat in peaks_time:
+				downbeat_times[i] = beat
+		downbeats = [0 for i in range(len(beats))]
+		for beat in downbeat_times.keys():
+			downbeats[beat] = 1
+\end{lstlisting}
+
+\begin{lstlisting}
+		downbeats = tail + downbeats
+		prior_measure = calc_measure(downbeats)
+		if prior_measure == 0:
+			return -1, downbeats
+		if prior_measure > 2:
+			return 0, np.arange(prior_measure - 2, prior_measure + 3, 1)
+		elif prior_measure == 2:
+			return 0, np.arange(prior_measure - 1, prior_measure + 3, 1)
+		else:
+			return 0, np.arange(prior_measure, prior_measure + 3, 1)
+\end{lstlisting}
+
+Функция calc\_measure отвечает за расчет тактового размера на основе списка из чередующихся сильных и слабых долей, где сильные доли обозначаются 1, а слабые -- 0.
+
+Если в указанном отрывке найдена только одна сильная доля, то этот фрагмент объединяется со следующим. Для этого среди входных данных функции get\_measure\_range есть параметр tail, который представляет собой список сильных и слабых долей предыдущего фрагмента аудио.
+
+Набор сильных долей формируется на основе совпадений времени в двух списках: пиков амплитуды (peaks\_time) и <<ударов>> (beats\_time).
 
 \subsection{Пользовательский интерфейс}
 
-На рисунках ниже представлен основной интерфейс приложения.
+На рисунке~\ref{img:gui} представлен интерфейс разработанного приложения.
 
-TODO
+Приложение поддерживает загрузку только mp3 файлов. Список возможных жанров загружаемой музыки был создан на основе датасета. Темпы и размеры можно определять отдельно, независимо друг от друга.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.7]{inc/img/gui.jpg}
+	\caption{Интерфейс приложения}
+	\label{img:gui}
+\end{figure}
+
+\newpage
 
 \subsection{Тестирование приложения}
 
+В процессе разработки приложения проводились модульные тесты (листинг~\ref{lst:units}). Тестировались такие функции, как: разделение аудиофайла на фрагменты, очистка директории, удаление директории и расчет тактового размера на основе списка сильных и слабых долей.
+
+\begin{lstlisting}[label={lst:units}, caption={модульные тесты}]
+	class SplitAudio(unittest.TestCase):
+		def test_splitting(self):
+			audio = "test_audio/vo_sne.mp3"
+			step = 5000
+			split_mp3(audio, step)
+			self.assertEqual(os.path.exists("tmp/"), True)
+			self.assertGreater(len(os.listdir("tmp/")), 0)
+	
+	class CleanDirs(unittest.TestCase):
+		def test_cleaning(self):
+\end{lstlisting}
+
+\begin{lstlisting}
+			os.mkdir("temp/")
+			fp = open('temp/file.txt', 'x')
+			fp.close()
+			dir = "temp/"
+			clean_dir(dir)
+			self.assertEqual(len(os.listdir(dir)), 0)
+			os.rmdir(dir)
+		def test_removing(self):
+			os.mkdir("temp/")
+			dir = "temp/"
+			remove_dir(dir)
+			self.assertEqual(os.path.exists("temp/"), False)
+	
+	class CalcMeasure(unittest.TestCase):
+		def test_calculating(self):
+			downbeats = [1, 0, 0, 0, 1, 0, 0, 0, 1]
+			measure = calc_measure(downbeats)
+			self.assertEqual(measure, 4)
+\end{lstlisting}
+
+Как видно из рисунка~\ref{img:units} все модульные тесты были успешно пройдены.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.8]{inc/img/units.jpg}
+	\caption{Результаты модульного тестирования}
+	\label{img:units}
+\end{figure}
+
+Работоспособность программы в целом проверялась вручную. На рисунке~\ref{img:test_const} представлены результаты работы программы на одном из аудиофайлов.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.9]{inc/img/test_constant.jpg}
+	\caption{Результаты функционального тестирования}
+	\label{img:test_const}
+\end{figure}
+
+\newpage
+
+При этом заранее известно, что темп данной аудиозаписи 125 bpm, а тактовый размер -- 4/4 (рис.~\ref{img:vosne_ref}, самое левое число -- темп в bpm, правее -- размер).
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=1.4]{inc/img/vosne_ref.jpg}
+	\caption{Эталонные значения темпа и размера}
+	\label{img:vosne_ref}
+\end{figure}
+
+Таким образом, отклонение полученного темпа от идеального составляет примерно 11\%, что является приемлемым результатом, т.~к. изначально заявлялось, что ошибки байесовского метода могут составлять до 18\% (см. аналитический раздел).
+
+Размер 2/4 также является допустимым результатом в данном случае. Это означает, что сильных долей в аудиозаписи было выявлено в два раза больше, но при этом основной ритм остается тем же, что и при 4/4 (т.~к. два такта по 2/4 дают в сумме один такт с размером 4/4).
+
 \subsection*{Выводы}
 
-В данном разделе были выбраны СУБД, язык программирования и среда разработки.
+В данном разделе были выбраны язык программирования и среда разработки, а также приведены детали реализации, пользовательский интерфейс и результаты тестирования разработанной программы.
 
-В качестве СУБД выбрана PostgreSQL, так как она:
-\begin{itemize}
-	\item свободно распространяемая;
-	\item полностью соответствует требованиям ACID;
-	\item поддерживает все необходимые в рамках поставленной задачи функции (такие, как вложенные селекты, транзакции, триггеры, процедуры).
-\end{itemize}
+В качестве языка программирования был выбран Python, а в качестве среды разработки -- PyCharm.
 
-В качестве языка программирования был выбран Python, так как он:
-\begin{itemize}
-	\item поддерживает работу с PostgreSQL;
-	\item объектно-ориентированный;
-	\item обладает необходимыми расширениями для работы с графическим интерфейсом.
-\end{itemize}
+Была описана реализация байесовских моделей для определения ритма и темпа, разделения аудиофайла на фрагменты и определения диапазона размеров.
 
-В качестве среды разработки был выбран PyCharm, так как он:
-\begin{itemize}
-	\item имеет свободно распространяемую версию;
-	\item содержит множество удобств для написания и отладки кода, а также для работы с СУБД.
-\end{itemize}
-
-Помимо этого, в данном разделе был разработан и протестирован исходный код программы. Программа тестировалась в соответствии с этапами, приведёнными в разделе 2.4. Все тесты были успешно пройдены.
+Все модульные тесты были успешно пройдены. Результаты функциональных тестов также оказались в пределах допустимости.

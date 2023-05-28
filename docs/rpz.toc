@@ -25,7 +25,10 @@
 \contentsline {section}{\numberline {3}Технологический раздел}{31}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Выбор средств программной реализации}{31}{subsection.3.1}%
 \contentsline {subsection}{\numberline {3.2}Детали реализации}{31}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Пользовательский интерфейс}{32}{subsection.3.3}%
-\contentsline {subsection}{\numberline {3.4}Тестирование приложения}{32}{subsection.3.4}%
-\contentsline {section}{ЗАКЛЮЧЕНИЕ}{33}{subsection.3.4}%
-\contentsline {section}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}{34}{subsection.3.4}%
+\contentsline {subsubsection}{\numberline {3.2.1}Байесовские модели}{31}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Разделение аудиофайла}{33}{subsubsection.3.2.2}%
+\contentsline {subsubsection}{\numberline {3.2.3}Определение диапазона размеров}{34}{subsubsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.3}Пользовательский интерфейс}{35}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Тестирование приложения}{36}{subsection.3.4}%
+\contentsline {section}{ЗАКЛЮЧЕНИЕ}{40}{figure.caption.22}%
+\contentsline {section}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}{41}{figure.caption.22}%
