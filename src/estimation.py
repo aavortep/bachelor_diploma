@@ -6,6 +6,7 @@ import librosa
 from scipy import stats
 import numpy as np
 import os
+import matplotlib.pyplot as plt
 
 
 def genres_to_ints(genre_dataset):
@@ -89,38 +90,48 @@ def calc_measure(downbeats: list) -> int:
 
 def get_measure_range(audio_path: str, tail: list):
     y, sr = librosa.load(audio_path)
+    #fig, ax = plt.subplots(nrows=2, sharex=True)
+    #librosa.display.waveshow(y, sr=sr, ax=ax[0])
     # сила "нажатия" на ноты
     onset_env = librosa.onset.onset_strength(y=y, sr=sr)
+    #times = librosa.times_like(onset_env, sr=sr, hop_length=512)
+    #ax[1].plot(times, onset_env, alpha=0.8, label='Onset strength')
     # пиковые силы "нажатия" на ноты
-    peaks = librosa.util.peak_pick(onset_env, pre_max=3, post_max=3, pre_avg=3,
-                                   post_avg=5, delta=0.5, wait=10)
+    peaks = librosa.util.peak_pick(onset_env, pre_max=50, post_max=50, pre_avg=50,
+                                   post_avg=50, delta=0.5, wait=10)
+    #ax[1].vlines(times[peaks], 0,
+    #             onset_env.max(initial=0), color='r', alpha=0.8,
+    #             label='Selected peaks')
+    #plt.show()
     peaks_time = librosa.frames_to_time(peaks, sr=sr)
 
     _, beats = librosa.beat.beat_track(onset_envelope=onset_env, sr=sr)
     beats_time = librosa.frames_to_time(beats, sr=sr)
     # предположительные начала тактов
     downbeat_times = {}
-    for i, beat in enumerate(beats_time):
-        if beat in peaks_time:
-            downbeat_times[i] = beat
+    for i, beat in enumerate(beats):
+        beat_range = list(range(beat - 3, beat + 4))
+        for b in beat_range:
+            if b in peaks:
+                downbeat_times[i] = beat
     downbeats = [0 for i in range(len(beats))]
     for beat in downbeat_times.keys():
         downbeats[beat] = 1
     downbeats = tail + downbeats
     prior_measure = calc_measure(downbeats)
     if prior_measure == 0:
-        return -1, downbeats
+        return -1, downbeats, prior_measure
     if prior_measure > 2:
-        return 0, np.arange(prior_measure - 2, prior_measure + 3, 1)
+        return 0, np.arange(prior_measure - 2, prior_measure + 3, 1), prior_measure
     elif prior_measure == 2:
-        return 0, np.arange(prior_measure - 1, prior_measure + 3, 1)
+        return 0, np.arange(prior_measure - 1, prior_measure + 3, 1), prior_measure
     else:
-        return 0, np.arange(prior_measure, prior_measure + 3, 1)
+        return 0, np.arange(prior_measure, prior_measure + 3, 1), prior_measure
 
 
 def estimate_rhythm(audio_path: str, rhythm_dataset, step: int, progress) -> dict:
     # байесовское моделирование для ритма
-    _, prior_range = get_measure_range(audio_path, [])
+    _, prior_range, _ = get_measure_range(audio_path, [])
     trace = rhythm_model(prior_range[0], prior_range[-1], rhythm_dataset, progress)
 
     split_mp3(audio_path, step)
@@ -129,18 +140,18 @@ def estimate_rhythm(audio_path: str, rhythm_dataset, step: int, progress) -> dic
     t = 0
     tail = []
     for audio in os.listdir("tmp/"):
-        er, measure_range = get_measure_range("tmp/" + audio, tail)
+        er, measure_range, sig = get_measure_range("tmp/" + audio, tail)
         if er == -1:  # если в отрывке меньше двух сильных ударов, то объединяем со следующим отрывком
             tail = measure_range
             continue
         else:
             tail = []
 
-        measure_samples = trace['measure']
-        density = stats.gaussian_kde(measure_samples)
-        measure_estimate = measure_range[density(measure_range).argmax()]
+        #measure_samples = trace['measure']
+        #density = stats.gaussian_kde(measure_samples)
+        #measure_estimate = measure_range[density(measure_range).argmax()]
 
-        measures.append(measure_estimate)
+        measures.append(sig)
         times.append(t)
 
         t += (step / 1000)
