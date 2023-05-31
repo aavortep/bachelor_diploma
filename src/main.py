@@ -40,6 +40,10 @@ class MyWindow(QtWidgets.QMainWindow):
             msg.setWindowTitle("Ошибка")
             msg.exec()
         else:
+            self.ui.tempoTable.setRowCount(1)
+            self.ui.tempoTable.setItem(0, 0, QTableWidgetItem("loading..."))
+            self.ui.tempoTable.setItem(0, 1, QTableWidgetItem("loading..."))
+            self.ui.tempoTable.update()
             genre = self.ui.genreBox.currentText()
             tempos = estimate_bpm(self.audio_path, self.spotify_data['tempo'], self.spotify_data['track_genre'],
                                   genre, 5000, self.ui.progressBar)
@@ -56,6 +60,10 @@ class MyWindow(QtWidgets.QMainWindow):
             msg.setWindowTitle("Ошибка")
             msg.exec()
         else:
+            self.ui.measureTable.setRowCount(1)
+            self.ui.measureTable.setItem(0, 0, QTableWidgetItem("loading..."))
+            self.ui.measureTable.setItem(0, 1, QTableWidgetItem("loading..."))
+            self.ui.measureTable.update()
             measures = estimate_rhythm(self.audio_path, self.spotify_data['time_signature'],
                                        5000, self.ui.progressBar)
             self.ui.measureTable.setRowCount(len(measures))
