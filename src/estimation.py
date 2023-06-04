@@ -29,6 +29,10 @@ def get_tempo_bounds(bpm_dataset, genre_dataset, track_genre: str):
 
 
 def estimate_bpm(audio_path: str, bpm_dataset, genre_dataset, track_genre: str, step: int, progress) -> dict:
+    y, sr = librosa.load(audio_path)
+    prior_bpm, _ = librosa.beat.beat_track(y=y, sr=sr)
+    print(prior_bpm)
+
     # диапазон bpm для аудиофайла
     min_bpm, max_bpm = get_tempo_bounds(bpm_dataset, genre_dataset, track_genre)
     # обозначение жанров числами
@@ -46,6 +50,7 @@ def estimate_bpm(audio_path: str, bpm_dataset, genre_dataset, track_genre: str, 
         genre_int = np.where(genre_dataset.unique() == track_genre)[0][0]
         delta = 40
         prior_bpm, _ = librosa.beat.beat_track(y=y, sr=sr)
+        # print(prior_bpm)
         tempos = np.arange(prior_bpm - delta, prior_bpm + delta, 0.5)
 
         genres_samples = trace['genre_coef']
