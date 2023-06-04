@@ -33,16 +33,18 @@
 \usepackage{titlesec}
 
 \titleformat{\section}
-{\normalsize\fontsize{20}{23}\filcenter\bfseries}{\thesection}{1em}{}
+{\normalsize\fontsize{20}{23}\bfseries}{\thesection}{1em}{}
+\titlespacing\section{\parindent}{\parskip}{\parskip}
 
 \titleformat{\subsection}[hang]
-{\bfseries\normalsize}{\thesubsection}{1em}{}
+{\normalsize\fontsize{17}{20}\bfseries}{\thesubsection}{1em}{}
 \titlespacing\subsection{\parindent}{\parskip}{\parskip}
 
+%\def\myformat#1{\centering#1}
 \titleformat{\subsubsection}[hang]
 {\bfseries\normalsize}{\thesubsubsection}{1em}{}
 \titlespacing\subsubsection{\parindent}{\parskip}{\parskip}
-
+%
 \newcommand{\specsection}[1]{\section*{#1}\addcontentsline{toc}{section}{#1}}
 \newcommand{\specsubsection}[1]{\subsection*{#1}\addcontentsline{toc}{subsection}{#1}}
 \newcommand{\specsubsubsection}[1]{\subsubsection*{#1}\addcontentsline{toc}{subsubsection}{#1}}
@@ -56,7 +58,7 @@
 \renewcommand{\thefigure}{\arabic{section}.\arabic{figure}}
 \renewcommand{\thetable}{\arabic{section}.\arabic{table}}
 %\DeclareCaptionLabelFormat{custom}{#1 \arabic{chapter}.#2}
-\captionsetup[figure]{labelsep=endash}
+\captionsetup[figure]{labelsep=endash, name=Рисунок}
 \captionsetup[table]{singlelinecheck=false, justification=raggedleft, labelsep=endash}
 
 \usepackage{diagbox} % Диагональное разделение первой ячейки в таблицах
@@ -188,7 +190,7 @@
 		\begin{center}
 			\fontsize{18pt}{0.6cm}\selectfont 
 			
-			<<Метод автоматического определения ритмического рисунка и темпа цифровой музыкальной записи с использованием байесовского иерархического моделирования>>
+			<<Метод автоматического определения ритмического рисунка и темпа цифровой музыкальной записи на основе байесовского иерархического моделирования>>
 			
 		\end{center}
 		
@@ -223,11 +225,11 @@
 %\include{tex/tz.tex}
 \normalsize
 \pagenumbering{arabic}
-\setcounter{page}{3}
+\setcounter{page}{5}
 
 \include{tex/abstract}
 
-\renewcommand{\contentsname}{\normalsize\bfseries\centering СОДЕРЖАНИЕ}
+\renewcommand{\contentsname}{\normalsize\fontsize{20}{23}\bfseries\centering СОДЕРЖАНИЕ}
 \tableofcontents
 \clearpage
 
@@ -236,7 +238,7 @@
 \include{tex/analysis}
 \include{tex/design}
 \include{tex/impl}
-%\include{tex/research}
+\include{tex/research}
 \include{tex/conclusion}
 
 % говно литература для тест ВКР
@@ -247,6 +249,6 @@
 %\renewcommand{\refname}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}
 %\bibliography{bibliography}
 
-%\include{tex/appendix}
+\include{tex/appendix}
 
 \end{document}

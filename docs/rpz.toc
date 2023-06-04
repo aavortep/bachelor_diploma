@@ -1,34 +1,42 @@
 \babel@toc {russian}{}\relax 
-\contentsline {section}{РЕФЕРАТ}{3}{table.caption.1}%
-\contentsline {section}{ВВЕДЕНИЕ}{6}{table.caption.1}%
-\contentsline {section}{\numberline {1}Аналитический раздел}{7}{section.1}%
-\contentsline {subsection}{\numberline {1.1}Темп, ритм и метр}{7}{subsection.1.1}%
-\contentsline {subsection}{\numberline {1.2}Проблема определения ритма и темпа}{8}{subsection.1.2}%
-\contentsline {subsection}{\numberline {1.3}Дискретное вейвлет-преобразование}{9}{subsection.1.3}%
-\contentsline {subsubsection}{\numberline {1.3.1}Общие сведения}{9}{subsubsection.1.3.1}%
-\contentsline {subsubsection}{\numberline {1.3.2}Определение ритма и темпа}{11}{subsubsection.1.3.2}%
-\contentsline {subsection}{\numberline {1.4}Скрытые модели Маркова}{12}{subsection.1.4}%
-\contentsline {subsubsection}{\numberline {1.4.1}Стохастическое моделирование}{12}{subsubsection.1.4.1}%
-\contentsline {subsubsection}{\numberline {1.4.2}Определение ритма}{14}{subsubsection.1.4.2}%
-\contentsline {subsection}{\numberline {1.5}Байесовское иерархическое моделирование}{14}{subsection.1.5}%
-\contentsline {subsubsection}{\numberline {1.5.1}Общие сведения}{14}{subsubsection.1.5.1}%
-\contentsline {subsubsection}{\numberline {1.5.2}Определение темпа и ритма}{15}{subsubsection.1.5.2}%
-\contentsline {subsection}{\numberline {1.6}Использование сверточных нейросетей}{17}{subsection.1.6}%
-\contentsline {subsubsection}{\numberline {1.6.1}Представление сигнала}{17}{subsubsection.1.6.1}%
-\contentsline {subsubsection}{\numberline {1.6.2}Архитектура сети}{17}{subsubsection.1.6.2}%
-\contentsline {subsection}{\numberline {1.7}Сравнение методов}{19}{subsection.1.7}%
-\contentsline {section}{\numberline {2}Конструкторский раздел}{22}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Определение переменного темпа}{22}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Определение переменного тактового размера}{26}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Структуры данных}{29}{subsection.2.3}%
-\contentsline {subsection}{\numberline {2.4}Структура ПО}{29}{subsection.2.4}%
-\contentsline {section}{\numberline {3}Технологический раздел}{31}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Выбор средств программной реализации}{31}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Детали реализации}{31}{subsection.3.2}%
-\contentsline {subsubsection}{\numberline {3.2.1}Байесовские модели}{31}{subsubsection.3.2.1}%
-\contentsline {subsubsection}{\numberline {3.2.2}Разделение аудиофайла}{33}{subsubsection.3.2.2}%
-\contentsline {subsubsection}{\numberline {3.2.3}Определение диапазона размеров}{34}{subsubsection.3.2.3}%
-\contentsline {subsection}{\numberline {3.3}Пользовательский интерфейс}{35}{subsection.3.3}%
-\contentsline {subsection}{\numberline {3.4}Тестирование приложения}{36}{subsection.3.4}%
-\contentsline {section}{ЗАКЛЮЧЕНИЕ}{40}{figure.caption.22}%
-\contentsline {section}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}{41}{figure.caption.22}%
+\contentsline {section}{РЕФЕРАТ}{5}{table.caption.1}%
+\contentsline {section}{ВВЕДЕНИЕ}{8}{table.caption.1}%
+\contentsline {section}{\numberline {1}Аналитический раздел}{9}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Темп, ритм и метр}{9}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Проблема определения ритма и темпа}{10}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Дискретное вейвлет-преобразование}{11}{subsection.1.3}%
+\contentsline {subsubsection}{\numberline {1.3.1}Общие сведения}{11}{subsubsection.1.3.1}%
+\contentsline {subsubsection}{\numberline {1.3.2}Определение ритма и темпа}{13}{subsubsection.1.3.2}%
+\contentsline {subsection}{\numberline {1.4}Скрытые модели Маркова}{14}{subsection.1.4}%
+\contentsline {subsubsection}{\numberline {1.4.1}Стохастическое моделирование}{14}{subsubsection.1.4.1}%
+\contentsline {subsubsection}{\numberline {1.4.2}Определение ритма}{16}{subsubsection.1.4.2}%
+\contentsline {subsection}{\numberline {1.5}Байесовское иерархическое моделирование}{16}{subsection.1.5}%
+\contentsline {subsubsection}{\numberline {1.5.1}Общие сведения}{16}{subsubsection.1.5.1}%
+\contentsline {subsubsection}{\numberline {1.5.2}Определение темпа и ритма}{17}{subsubsection.1.5.2}%
+\contentsline {subsection}{\numberline {1.6}Использование сверточных нейросетей}{19}{subsection.1.6}%
+\contentsline {subsubsection}{\numberline {1.6.1}Представление сигнала}{19}{subsubsection.1.6.1}%
+\contentsline {subsubsection}{\numberline {1.6.2}Архитектура сети}{19}{subsubsection.1.6.2}%
+\contentsline {subsection}{\numberline {1.7}Сравнение методов}{21}{subsection.1.7}%
+\contentsline {section}{\numberline {2}Конструкторский раздел}{25}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Определение переменного темпа}{25}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Определение переменного тактового размера}{30}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Структуры данных}{33}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Структура ПО}{33}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Технологический раздел}{35}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Выбор средств программной реализации}{35}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Детали реализации}{35}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Байесовские модели}{35}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Разделение аудиофайла}{37}{subsubsection.3.2.2}%
+\contentsline {subsubsection}{\numberline {3.2.3}Определение диапазона размеров}{38}{subsubsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.3}Пользовательский интерфейс}{39}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Тестирование приложения}{41}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Исследовательский раздел}{46}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Сравнение результатов работы метода с существующим аналогом}{46}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Применимость ПО для аудиозаписей с разным набором инструментов}{47}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Применимость ПО для музыки разных жанров}{52}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Оценка разработанного метода}{55}{subsection.4.4}%
+\contentsline {section}{ЗАКЛЮЧЕНИЕ}{57}{subsection.4.4}%
+\contentsline {section}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}{58}{subsection.4.4}%
+\contentsline {section}{ПРИЛОЖЕНИЕ А}{60}{subsection.4.4}%
+\contentsline {section}{ПРИЛОЖЕНИЕ Б}{64}{lstnumber.6.131}%
+\contentsline {section}{ПРИЛОЖЕНИЕ В}{65}{lstnumber.7.31}%

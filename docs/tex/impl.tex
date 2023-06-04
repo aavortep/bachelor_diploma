@@ -5,19 +5,19 @@
 В качестве языка программирования был выбран Python, так как:
 
 \begin{itemize}
-	\item имеется достаточный опыт программирования на этом языке, что сократит время написания программы;
-	\item данный язык программирования содержит в себе все необходимые библиотеки для работы с байесовскими моделями и аудиофайлами, что также ускорит процесс разработки.
+	\item[---] имеется достаточный опыт программирования на этом языке, что сократит время написания программы;
+	\item[---] для данного языка программирования имеются все необходимые библиотеки для работы с байесовскими моделями и аудиофайлами, что также ускорит процесс разработки.
 \end{itemize}
 
 В качестве среды разработки был выбран PyCharm по следующим причинам:
 
 \begin{itemize}
-	\item он бесплатен в пользовании студентами;
-	\item он имеет множество удобств, которые облегчают процесс написания и отладки кода;
-	\item имеется достаточный опыт программирования при помощи данной среды разработки, что сократит время изучения возможностей.
+	\item[---] он бесплатен для использования студентами;
+	\item[---] он имеет множество встроенных интсрументов, которые облегчают процесс написания и отладки кода;
+	\item[---] имеется достаточный опыт программирования с использованием данной среды разработки, что сократит время изучения возможностей.
 \end{itemize}
 
-Для работы с аудиофайлами использовалась библиотека librosa~\cite{librosa}, а для реализации байесовских моделей -- библиотека PyMC3~\cite{pymc3_docs}. Кроме того в программе вместо обычных списков часто использовались numpy массивы~\cite{numpy} в целях более удобной работы с ними.
+Для работы с аудиофайлами использовалась библиотека librosa~\cite{librosa}, а для реализации байесовских моделей -- библиотека PyMC3~\cite{pymc3_docs}. Кроме того в программе вместо обычных списков часто для удобства использовались numpy массивы~\cite{numpy}.
 
 \subsection{Детали реализации}
 
@@ -25,13 +25,12 @@
 
 В листингах \ref{lst:bpmmodel}, \ref{lst:measuremodel} представлена реализация байесовских иерархических моделей для оценки темпа и тактового размера соответственно.
 
+\newpage
+
 \begin{lstlisting}[label={lst:bpmmodel}, caption={реализация байесовской модели для определения темпа}]
 	def bpm_model(min_bpm: int, max_bpm: int, bpm_dataset, genre_dataset, genres_ints, progress):
 		with pm.Model() as model:
 			# hyperpriors (lvl 1)
-\end{lstlisting}
-
-\begin{lstlisting}
 			tempo = pm.Uniform('tempo', lower=min_bpm, upper=max_bpm)
 			progress.setValue(20)
 			mu = (min_bpm + max_bpm) / 2.0
@@ -64,13 +63,13 @@
 			progress.setValue(40)
 			sigma = (measure_max - measure_min) / 12.0
 			progress.setValue(60)
-	
 			# likelihood
-			measure_obs = pm.Normal('measure_obs', mu=mu, sd=sigma, observed=rhythm_dataset)
-			progress.setValue(80)
 \end{lstlisting}
 
 \begin{lstlisting}
+			measure_obs = pm.Normal('measure_obs', mu=mu, sd=sigma, observed=rhythm_dataset)
+			progress.setValue(80)
+
 			trace = pm.sample(1000, tune=1000, chains=2)
 			progress.setValue(100)
 	
@@ -82,6 +81,8 @@
 Выходными данными указанных функций являются распределения соответствующих параметров (в первом случае -- это темп и коэффициенты для всех жанров, а во втором -- тактовый размер).
 
 Метод sample отвечает за сам процесс моделирования (получения апостериорных распределений).
+
+Расчет диапазона возможных темпов был реализован с помощью метода beat\_track() из библиотеки librosa, в качестве дельты взято 40 bpm.
 
 \subsubsection{Разделение аудиофайла}
 
@@ -95,6 +96,9 @@
 		audio_file = AudioSegment.from_file(audio_path, format="mp3")
 		# fragments length in milliseconds
 		part_length = step
+\end{lstlisting}
+
+\begin{lstlisting}
 		# split audio
 		parts = [audio_file[i:i + part_length] for i in range(0, len(audio_file), part_length)]
 		# save fragments
@@ -128,17 +132,17 @@
 		peaks_time = librosa.frames_to_time(peaks, sr=sr)
 		_, beats = librosa.beat.beat_track(onset_envelope=onset_env, sr=sr)
 		beats_time = librosa.frames_to_time(beats, sr=sr)
-		# beginnings of bars
-		downbeat_times = {}
-		for i, beat in enumerate(beats_time):
-			if beat in peaks_time:
-				downbeat_times[i] = beat
-		downbeats = [0 for i in range(len(beats))]
-		for beat in downbeat_times.keys():
-			downbeats[beat] = 1
 \end{lstlisting}
 
 \begin{lstlisting}
+		# beginnings of bars
+		downbeat_times = {}
+		for i, beat in enumerate(beats_time):
+		if beat in peaks_time:
+		downbeat_times[i] = beat
+		downbeats = [0 for i in range(len(beats))]
+		for beat in downbeat_times.keys():
+		downbeats[beat] = 1
 		downbeats = tail + downbeats
 		prior_measure = calc_measure(downbeats)
 		if prior_measure == 0:
@@ -170,6 +174,25 @@
 	\label{img:gui}
 \end{figure}
 
+Для того, чтобы определить темп аудиофайла, необходимо:
+
+\begin{enumerate}
+	\item Загрузить аудиофайл, нажав на верхнюю кнопку.
+	\item Выбрать жанр загруженной музыки из выпадающего списка ниже.
+	\item Нажать на кнопку <<Определить темп>>.
+	\item Результаты появятся в левой таблице через 1,5-2 минуты.
+\end{enumerate}
+
+Для определения ритма:
+
+\begin{enumerate}
+	\item Загрузить аудиофайл, нажав на верхнюю кнопку.
+	\item Нажать на кнопку <<Определить размер>>.
+	\item Результаты появятся в правой таблице в течение минуты.
+\end{enumerate}
+
+Жанр в этом случае указывать необязательно.
+
 \newpage
 
 \subsection{Тестирование приложения}
@@ -187,9 +210,6 @@
 	
 	class CleanDirs(unittest.TestCase):
 		def test_cleaning(self):
-\end{lstlisting}
-
-\begin{lstlisting}
 			os.mkdir("temp/")
 			fp = open('temp/file.txt', 'x')
 			fp.close()
@@ -210,7 +230,7 @@
 			self.assertEqual(measure, 4)
 \end{lstlisting}
 
-Как видно из рисунка~\ref{img:units} все модульные тесты были успешно пройдены.
+Как видно из рисунка~\ref{img:units}, все модульные тесты были успешно пройдены.
 
 \begin{figure}[h]
 	\centering
@@ -219,12 +239,14 @@
 	\label{img:units}
 \end{figure}
 
+\newpage
+
 Работоспособность программы в целом проверялась вручную. На рисунке~\ref{img:test_const} представлены результаты работы программы на одном из аудиофайлов.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.9]{inc/img/test_constant.jpg}
-	\caption{Результаты функционального тестирования}
+	\caption{Результаты для постоянного темпа и ритма}
 	\label{img:test_const}
 \end{figure}
 
@@ -239,9 +261,37 @@
 	\label{img:vosne_ref}
 \end{figure}
 
-Таким образом, отклонение полученного темпа от идеального составляет примерно 11\%, что является приемлемым результатом, т.~к. изначально заявлялось, что ошибки байесовского метода могут составлять до 18\% (см. аналитический раздел).
+Таким образом, отклонение полученного темпа от идеального составляет примерно 11\%, что является приемлемым результатом, поскольку согласно исследованиям~\cite{bayesian} ошибки байесовского метода могут составлять до 18\%.
 
 Размер 2/4 также является допустимым результатом в данном случае. Это означает, что сильных долей в аудиозаписи было выявлено в два раза больше, но при этом основной ритм остается тем же, что и при 4/4 (т.~к. два такта по 2/4 дают в сумме один такт с размером 4/4).
+
+Для тестирования определения переменного темпа использовался аудиофайл с темпом 115 bpm в первые 25 секунд и 120 bpm в оставшееся время (размер этого музыкального фрагмента постоянен и равен 6/8, что в данном случае может быть приравнено к 3/4).
+
+Результаты работы метода представлены на рисунке~\ref{img:test_tempo}.
+
+Ошибка определения темпа в данном случае составляет примерно 7\%, что также укладывается в допустимые пределы.
+
+Для тестирования определения переменного ритма использовался аудиофайл с размером 3/4 в первые 15 секунд и 4/4 bpm в оставшееся время (темп этого музыкального фрагмента постоянен и равен 100 bpm).
+
+Результаты работы метода представлены на рисунке~\ref{img:test_rhythm}.
+
+Ошибка определения размера в таком случае составляет примерно 8\%.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.85]{inc/img/test_tempo.jpg}
+	\caption{Результаты для переменного темпа}
+	\label{img:test_tempo}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.85]{inc/img/test_rhythm.jpg}
+	\caption{Результаты для переменного размера}
+	\label{img:test_rhythm}
+\end{figure}
+
+\clearpage
 
 \subsection*{Выводы}
 
