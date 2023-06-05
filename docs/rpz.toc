@@ -38,5 +38,5 @@
 \contentsline {section}{ЗАКЛЮЧЕНИЕ}{57}{subsection.4.4}%
 \contentsline {section}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}{58}{subsection.4.4}%
 \contentsline {section}{ПРИЛОЖЕНИЕ А}{60}{subsection.4.4}%
-\contentsline {section}{ПРИЛОЖЕНИЕ Б}{64}{lstnumber.6.131}%
+\contentsline {section}{ПРИЛОЖЕНИЕ Б}{64}{lstnumber.-4.26}%
 \contentsline {section}{ПРИЛОЖЕНИЕ В}{65}{lstnumber.7.31}%
