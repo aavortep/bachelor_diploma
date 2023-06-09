@@ -35,6 +35,8 @@
 \titleformat{\section}
 {\normalsize\fontsize{20}{23}\bfseries}{\thesection}{1em}{}
 \titlespacing\section{\parindent}{\parskip}{\parskip}
+\titleformat{name=\section,numberless}
+{\normalsize\fontsize{20}{23}\filcenter\bfseries}{}{0em}{}
 
 \titleformat{\subsection}[hang]
 {\normalsize\fontsize{17}{20}\bfseries}{\thesubsection}{1em}{}
@@ -45,6 +47,8 @@
 {\bfseries\normalsize}{\thesubsubsection}{1em}{}
 \titlespacing\subsubsection{\parindent}{\parskip}{\parskip}
 %
+\titleformat{\chapter}
+{\normalsize\fontsize{20}{23}\filcenter\bfseries}{\thechapter}{1em}{}
 \newcommand{\specsection}[1]{\section*{#1}\addcontentsline{toc}{section}{#1}}
 \newcommand{\specsubsection}[1]{\subsection*{#1}\addcontentsline{toc}{subsection}{#1}}
 \newcommand{\specsubsubsection}[1]{\subsubsection*{#1}\addcontentsline{toc}{subsubsection}{#1}}
@@ -59,7 +63,7 @@
 \renewcommand{\thetable}{\arabic{section}.\arabic{table}}
 %\DeclareCaptionLabelFormat{custom}{#1 \arabic{chapter}.#2}
 \captionsetup[figure]{labelsep=endash, name=Рисунок}
-\captionsetup[table]{singlelinecheck=false, justification=raggedleft, labelsep=endash}
+\captionsetup[table]{singlelinecheck=false, justification=raggedright, labelsep=endash}
 
 \usepackage{diagbox} % Диагональное разделение первой ячейки в таблицах
 

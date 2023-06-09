@@ -32,11 +32,11 @@
 \contentsline {subsection}{\numberline {3.4}Тестирование приложения}{41}{subsection.3.4}%
 \contentsline {section}{\numberline {4}Исследовательский раздел}{46}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Сравнение результатов работы метода с существующим аналогом}{46}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Применимость ПО для аудиозаписей с разным набором инструментов}{47}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Применимость ПО для музыки разных жанров}{52}{subsection.4.3}%
-\contentsline {subsection}{\numberline {4.4}Оценка разработанного метода}{55}{subsection.4.4}%
-\contentsline {section}{ЗАКЛЮЧЕНИЕ}{57}{subsection.4.4}%
-\contentsline {section}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}{58}{subsection.4.4}%
-\contentsline {section}{ПРИЛОЖЕНИЕ А}{60}{subsection.4.4}%
-\contentsline {section}{ПРИЛОЖЕНИЕ Б}{64}{lstnumber.-4.26}%
-\contentsline {section}{ПРИЛОЖЕНИЕ В}{65}{lstnumber.7.31}%
+\contentsline {subsection}{\numberline {4.2}Применимость ПО для аудиозаписей с разным набором инструментов}{48}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Применимость ПО для музыки разных жанров}{53}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Оценка разработанного метода}{56}{subsection.4.4}%
+\contentsline {section}{ЗАКЛЮЧЕНИЕ}{58}{subsection.4.4}%
+\contentsline {section}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}{59}{subsection.4.4}%
+\contentsline {section}{ПРИЛОЖЕНИЕ А}{61}{subsection.4.4}%
+\contentsline {section}{ПРИЛОЖЕНИЕ Б}{65}{lstnumber.-4.26}%
+\contentsline {section}{ПРИЛОЖЕНИЕ В}{66}{lstnumber.7.31}%
