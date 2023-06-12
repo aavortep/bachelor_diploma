@@ -19,7 +19,7 @@
 \contentsline {subsection}{\numberline {1.7}Сравнение методов}{21}{subsection.1.7}%
 \contentsline {section}{\numberline {2}Конструкторский раздел}{25}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Определение переменного темпа}{25}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Определение переменного тактового размера}{30}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.2}Определение переменного ритма}{30}{subsection.2.2}%
 \contentsline {subsection}{\numberline {2.3}Структуры данных}{33}{subsection.2.3}%
 \contentsline {subsection}{\numberline {2.4}Структура ПО}{33}{subsection.2.4}%
 \contentsline {section}{\numberline {3}Технологический раздел}{35}{section.3}%
