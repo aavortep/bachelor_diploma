@@ -102,8 +102,8 @@ def get_measure_range(audio_path: str, tail: list):
     #times = librosa.times_like(onset_env, sr=sr, hop_length=512)
     #ax[1].plot(times, onset_env, alpha=0.8, label='Onset strength')
     # пиковые силы "нажатия" на ноты
-    peaks = librosa.util.peak_pick(onset_env, pre_max=50, post_max=50, pre_avg=50,
-                                   post_avg=50, delta=0.5, wait=10)
+    peaks = librosa.util.peak_pick(onset_env, pre_max=30, post_max=30, pre_avg=30,
+                                   post_avg=30, delta=0.5, wait=10)
     #ax[1].vlines(times[peaks], 0,
     #             onset_env.max(initial=0), color='r', alpha=0.8,
     #             label='Selected peaks')
