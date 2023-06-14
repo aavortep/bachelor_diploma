@@ -34,18 +34,18 @@
 
 \titleformat{\section}
 {\normalsize\fontsize{20}{23}\bfseries}{\thesection}{1em}{}
-\titlespacing\section{\parindent}{\parskip}{\parskip}
+%\titlespacing\section{\parindent}{\parskip}{\parskip}
 \titleformat{name=\section,numberless}
 {\normalsize\fontsize{20}{23}\filcenter\bfseries}{}{0em}{}
 
 \titleformat{\subsection}[hang]
 {\normalsize\fontsize{17}{20}\bfseries}{\thesubsection}{1em}{}
-\titlespacing\subsection{\parindent}{\parskip}{\parskip}
+%\titlespacing\subsection{\parindent}{\parskip}{\parskip}
 
 %\def\myformat#1{\centering#1}
 \titleformat{\subsubsection}[hang]
 {\bfseries\normalsize}{\thesubsubsection}{1em}{}
-\titlespacing\subsubsection{\parindent}{\parskip}{\parskip}
+%\titlespacing\subsubsection{\parindent}{\parskip}{\parskip}
 %
 \titleformat{\chapter}
 {\normalsize\fontsize{20}{23}\filcenter\bfseries}{\thechapter}{1em}{}
@@ -200,7 +200,7 @@
 		
 		\vfill
 		\vfill
-		\vfill
+		%\vfill
 		
 		\begin{table}[h!]
 			\fontsize{12pt}{0.7\baselineskip}\selectfont
@@ -214,6 +214,13 @@
 			
 			\begin{signstabular}[0.55]{p{7.25cm} >{\centering\arraybackslash}p{4cm} >{\centering\arraybackslash}p{4cm}}
 				Руководитель & \uline{\mbox{\hspace*{4cm}}} & \uline{\hfill К. А. Кивва \hfill} \\
+				& \scriptsize (Подпись, дата) & \scriptsize (И.О. Фамилия)
+			\end{signstabular}
+		
+			\vspace{\baselineskip}
+		
+			\begin{signstabular}[0.55]{p{7.25cm} >{\centering\arraybackslash}p{4cm} >{\centering\arraybackslash}p{4cm}}
+				Нормконтролер & \uline{\mbox{\hspace*{4cm}}} & \uline{\hfill Д. Ю. Мальцева \hfill} \\
 				& \scriptsize (Подпись, дата) & \scriptsize (И.О. Фамилия)
 			\end{signstabular}
 		\end{table}

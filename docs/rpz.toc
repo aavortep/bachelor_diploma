@@ -10,13 +10,13 @@
 \contentsline {subsection}{\numberline {1.4}Скрытые модели Маркова}{14}{subsection.1.4}%
 \contentsline {subsubsection}{\numberline {1.4.1}Стохастическое моделирование}{14}{subsubsection.1.4.1}%
 \contentsline {subsubsection}{\numberline {1.4.2}Определение ритма}{16}{subsubsection.1.4.2}%
-\contentsline {subsection}{\numberline {1.5}Байесовское иерархическое моделирование}{16}{subsection.1.5}%
-\contentsline {subsubsection}{\numberline {1.5.1}Общие сведения}{16}{subsubsection.1.5.1}%
-\contentsline {subsubsection}{\numberline {1.5.2}Определение темпа и ритма}{17}{subsubsection.1.5.2}%
+\contentsline {subsection}{\numberline {1.5}Байесовское иерархическое моделирование}{17}{subsection.1.5}%
+\contentsline {subsubsection}{\numberline {1.5.1}Общие сведения}{17}{subsubsection.1.5.1}%
+\contentsline {subsubsection}{\numberline {1.5.2}Определение темпа и ритма}{18}{subsubsection.1.5.2}%
 \contentsline {subsection}{\numberline {1.6}Использование сверточных нейросетей}{19}{subsection.1.6}%
 \contentsline {subsubsection}{\numberline {1.6.1}Представление сигнала}{19}{subsubsection.1.6.1}%
-\contentsline {subsubsection}{\numberline {1.6.2}Архитектура сети}{19}{subsubsection.1.6.2}%
-\contentsline {subsection}{\numberline {1.7}Сравнение методов}{21}{subsection.1.7}%
+\contentsline {subsubsection}{\numberline {1.6.2}Архитектура сети}{20}{subsubsection.1.6.2}%
+\contentsline {subsection}{\numberline {1.7}Сравнение методов}{22}{subsection.1.7}%
 \contentsline {section}{\numberline {2}Конструкторский раздел}{25}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Определение переменного темпа}{25}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}Определение переменного ритма}{30}{subsection.2.2}%
@@ -28,7 +28,7 @@
 \contentsline {subsubsection}{\numberline {3.2.1}Байесовские модели}{35}{subsubsection.3.2.1}%
 \contentsline {subsubsection}{\numberline {3.2.2}Разделение аудиофайла}{37}{subsubsection.3.2.2}%
 \contentsline {subsubsection}{\numberline {3.2.3}Определение диапазона размеров}{38}{subsubsection.3.2.3}%
-\contentsline {subsection}{\numberline {3.3}Пользовательский интерфейс}{39}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.3}Пользовательский интерфейс}{40}{subsection.3.3}%
 \contentsline {subsection}{\numberline {3.4}Тестирование приложения}{41}{subsection.3.4}%
 \contentsline {section}{\numberline {4}Исследовательский раздел}{46}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Сравнение результатов работы метода с существующим аналогом}{46}{subsection.4.1}%
@@ -38,5 +38,3 @@
 \contentsline {section}{ЗАКЛЮЧЕНИЕ}{58}{subsection.4.4}%
 \contentsline {section}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}{59}{subsection.4.4}%
 \contentsline {section}{ПРИЛОЖЕНИЕ А}{61}{subsection.4.4}%
-\contentsline {section}{ПРИЛОЖЕНИЕ Б}{65}{lstnumber.-4.26}%
-\contentsline {section}{ПРИЛОЖЕНИЕ В}{66}{lstnumber.7.31}%

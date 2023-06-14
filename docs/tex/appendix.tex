@@ -1,207 +1,109 @@
 \anonsection{ПРИЛОЖЕНИЕ А}
 
-\begin{lstlisting}[caption={модуль оценки темпа и ритма}]
-	import pandas as pd
-	import librosa
-	from scipy import stats
-	import numpy as np
-	import os
-	
-	def genres_to_ints(genre_dataset):
-		all_genres = genre_dataset.unique()
-		genres_dict = {}
-		for i, genre in enumerate(all_genres):
-			genres_dict[genre] = i
-		genres_ints = np.array([0] * len(genre_dataset))
-		for i, genre in enumerate(genre_dataset.values):
-			genres_ints[i] = genres_dict[genre]
-		return genres_ints
-	
-	def get_tempo_bounds(bpm_dataset, genre_dataset, track_genre: str):
-		rows_num = [i for i in range(len(genre_dataset)) if genre_dataset.values[i] == track_genre]
-		tempos = [bpm_dataset.values[i] for i in rows_num]
-		max_bpm = max(tempos)
-		min_bpm = min(tempos)
-		return min_bpm, max_bpm
-	
-	def estimate_bpm(audio_path: str, bpm_dataset, genre_dataset, track_genre: str, step: int, progress) -> dict:
-		y, sr = librosa.load(audio_path)
-		prior_bpm, _ = librosa.beat.beat_track(y=y, sr=sr)
-		print(prior_bpm)
-		min_bpm, max_bpm = get_tempo_bounds(bpm_dataset, genre_dataset, track_genre)
-		genres_ints = genres_to_ints(genre_dataset)
-		trace = bpm_model(min_bpm, max_bpm, bpm_dataset, genre_dataset, genres_ints, progress)
-		split_mp3(audio_path, step)
-		bpms = []
-		times = []
-		t = 0
-		for audio in os.listdir("tmp/"):
-			y, sr = librosa.load("tmp/" + audio)
-			genre_int = np.where(genre_dataset.unique() == track_genre)[0][0]
-			delta = 40
-			prior_bpm, _ = librosa.beat.beat_track(y=y, sr=sr)
-			tempos = np.arange(prior_bpm - delta, prior_bpm + delta, 0.5)
-			genres_samples = trace['genre_coef']
-			genre_coef_samples = [genres_samples[i][genre_int] for i in range(len(genres_samples))]
-			density = stats.gaussian_kde(genre_coef_samples)
-			coef_estimate = genre_coef_samples[density(genre_coef_samples).argmax()]
-			sigma = (max_bpm - min_bpm) / 12.0
-			tempo_samples = trace['tempo']
-			density = stats.gaussian_kde(tempo_samples)
-			bpms.append(round(tempos[density(tempos).argmax()] + coef_estimate * sigma))
-			times.append(t)
-			t += (step / 1000)
-		inds_to_delete = []
-		for i in range(1, len(bpms)):
-			if bpms[i] == bpms[i - 1]:
-				inds_to_delete.append(i)
-		for i in range(len(inds_to_delete)-1, -1, -1):
-			bpms.pop(inds_to_delete[i])
-			times.pop(inds_to_delete[i])
-		res_tempos = {times[i]: bpms[i] for i in range(len(bpms))}
-		clean_dir("tmp/")
-		remove_dir("tmp/")
-		return res_tempos
-	
-	def calc_measure(downbeats: list) -> int:
-		downbeat_inds = [i for i, beat in enumerate(downbeats) if beat == 1]
-		if len(downbeat_inds) <= 1:
-			return 0
-		difs_sum = 0
-		for i in range(1, len(downbeat_inds)):
-			difs_sum += (downbeat_inds[i] - downbeat_inds[i - 1])
-		avg_measure = difs_sum / (len(downbeat_inds) - 1)
-		return round(avg_measure)
-	
-	def get_measure_range(audio_path: str, tail: list):
-		y, sr = librosa.load(audio_path)
-		onset_env = librosa.onset.onset_strength(y=y, sr=sr)
-		peaks = librosa.util.peak_pick(onset_env, pre_max=50, post_max=50, pre_avg=50, post_avg=50, delta=0.5, wait=10)
-		peaks_time = librosa.frames_to_time(peaks, sr=sr)
-		_, beats = librosa.beat.beat_track(onset_envelope=onset_env, sr=sr)
-		beats_time = librosa.frames_to_time(beats, sr=sr)
-		downbeat_times = {}
-		for i, beat in enumerate(beats):
-			beat_range = list(range(beat - 3, beat + 4))
-			for b in beat_range:
-				if b in peaks:
-					downbeat_times[i] = beat
-		downbeats = [0 for i in range(len(beats))]
-		for beat in downbeat_times.keys():
-			downbeats[beat] = 1
-		downbeats = tail + downbeats
-		prior_measure = calc_measure(downbeats)
-		if prior_measure == 0:
-			return -1, downbeats, prior_measure
-		if prior_measure > 2:
-			return 0, np.arange(prior_measure - 2, prior_measure + 3, 1), prior_measure
-		elif prior_measure == 2:
-			return 0, np.arange(prior_measure - 1, prior_measure + 3, 1), prior_measure
-		else:
-			return 0, np.arange(prior_measure, prior_measure + 3, 1), prior_measure
-	
-	def estimate_rhythm(audio_path: str, rhythm_dataset, step: int, progress) -> dict:
-		_, prior_range, _ = get_measure_range(audio_path, [])
-		trace = rhythm_model(prior_range[0], prior_range[-1], rhythm_dataset, progress)
-		split_mp3(audio_path, step)
-		measures = []
-		times = []
-\end{lstlisting}
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[angle=90,scale=0.65]{slides/Slide1.png}
+	\end{center}
+\end{figure}
 
-\begin{lstlisting}
-		t = 0
-		tail = []
-		for audio in os.listdir("tmp/"):
-			er, measure_range, sig = get_measure_range("tmp/" + audio, tail)
-			if er == -1:  # если в отрывке меньше двух сильных ударов, то объединяем со следующим отрывком
-				tail = measure_range
-				continue
-			else:
-				tail = []
-			measure_samples = trace['measure']
-			density = stats.gaussian_kde(measure_samples)
-			measure_estimate = measure_range[density(measure_range).argmax()]
-			measures.append(round(measure_estimate))
-			times.append(t)
-			t += (step / 1000)
-		inds_to_delete = []
-		for i in range(1, len(measures)):
-			if measures[i] == measures[i - 1]:
-				inds_to_delete.append(i)
-		for i in range(len(inds_to_delete) - 1, -1, -1):
-			measures.pop(inds_to_delete[i])
-			times.pop(inds_to_delete[i])
-		res_measures = {times[i]: measures[i] for i in range(len(measures))}
-		clean_dir("tmp/")
-		remove_dir("tmp/")
-		return res_measures
-\end{lstlisting}
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[angle=90,scale=0.75]{slides/Slide2.png}
+	\end{center}
+\end{figure}
 
-\clearpage
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[angle=90,scale=0.75]{slides/Slide3.png}
+	\end{center}
+\end{figure}
 
-\anonsection{ПРИЛОЖЕНИЕ Б}
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[angle=90,scale=0.75]{slides/Slide4.png}
+	\end{center}
+\end{figure}
 
-\begin{lstlisting}[caption={байесовские модели}]
-	import pymc3 as pm
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[angle=90,scale=0.75]{slides/Slide5.png}
+	\end{center}
+\end{figure}
 
-	def rhythm_model(measure_min, measure_max, rhythm_dataset, progress):
-		with pm.Model() as model:
-			measure = pm.Uniform('measure', lower=measure_min, upper=measure_max)
-			progress.setValue(20)
-			mu = (measure_min + measure_max) / 2.0
-			progress.setValue(40)
-			sigma = (measure_max - measure_min) / 12.0
-			progress.setValue(60)
-			measure_obs = pm.Normal('measure_obs', mu=mu, sd=sigma, observed=rhythm_dataset)
-			progress.setValue(80)
-			trace = pm.sample(1000, tune=1000, chains=2)
-			progress.setValue(100)
-		return trace
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[angle=90,scale=0.75]{slides/Slide6.png}
+	\end{center}
+\end{figure}
 
-	def bpm_model(min_bpm: int, max_bpm: int, bpm_dataset, genre_dataset, genres_ints, progress):
-		with pm.Model() as model:
-			tempo = pm.Uniform('tempo', lower=min_bpm, upper=max_bpm)
-			progress.setValue(20)
-			mu = (min_bpm + max_bpm) / 2.0
-			sigma = (max_bpm - min_bpm) / 12.0
-			genre_coef = pm.Normal('genre_coef', mu=0, sd=1, shape=len(genre_dataset.unique()))
-			progress.setValue(40)
-			bpm_est = mu + genre_coef[genres_ints] * sigma
-			progress.setValue(60)
-			bpm_obs = pm.Normal('bpm_obs', mu=bpm_est, sd=sigma, observed=bpm_dataset)
-			progress.setValue(80)
-			trace = pm.sample(1000, tune=500, chains=2, cores=1)
-			progress.setValue(100)
-		return trace
-\end{lstlisting}
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[angle=90,scale=0.75]{slides/Slide7.png}
+	\end{center}
+\end{figure}
 
-\clearpage
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[angle=90,scale=0.75]{slides/Slide8.png}
+	\end{center}
+\end{figure}
 
-\anonsection{ПРИЛОЖЕНИЕ В}
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[angle=90,scale=0.75]{slides/Slide9.png}
+	\end{center}
+\end{figure}
 
-\begin{lstlisting}[caption={разделение аудиофайла}]
-	from pydub import AudioSegment
-	import os
-	
-	def split_mp3(audio_path: str, step: int):
-		if not os.path.isdir("tmp"):
-			os.mkdir("tmp")
-		audio_file = AudioSegment.from_file(audio_path, format="mp3")
-		part_length = step
-		parts = [audio_file[i:i + part_length] for i in range(0, len(audio_file), part_length)]
-		for i, part in enumerate(parts):
-			part.export(f"tmp/part_{i}.mp3", format="mp3")
-\end{lstlisting}
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[angle=90,scale=0.75]{slides/Slide10.png}
+	\end{center}
+\end{figure}
 
-\begin{lstlisting}[caption={очистка временных директорий}]
-	import os
-	
-	def clean_dir(dir_path: str):
-		for root, dirs, files in os.walk(dir_path):
-			for name in files:
-				os.remove(os.path.join(root, name))
-	
-	def remove_dir(dir_path: str):
-		if os.path.isdir(dir_path):
-			os.rmdir(dir_path)
-\end{lstlisting}
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[angle=90,scale=0.75]{slides/Slide11.png}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[angle=90,scale=0.75]{slides/Slide12.png}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[angle=90,scale=0.75]{slides/Slide13.png}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[angle=90,scale=0.75]{slides/Slide14.png}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[angle=90,scale=0.75]{slides/Slide15.png}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[angle=90,scale=0.75]{slides/Slide16.png}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[angle=90,scale=0.75]{slides/Slide17.png}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[angle=90,scale=0.75]{slides/Slide18.png}
+	\end{center}
+\end{figure}

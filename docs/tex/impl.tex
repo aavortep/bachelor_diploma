@@ -68,7 +68,7 @@
 			# likelihood
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[label={lst:measuremodel2}, caption={реализация байесовской модели для определения ритма (продолжение)}]
 			measure_obs = pm.Normal('measure_obs', mu=mu, sd=sigma, observed=rhythm_dataset)
 			progress.setValue(80)
 
@@ -95,12 +95,12 @@
 		if not os.path.isdir("tmp"):
 			os.mkdir("tmp")
 		# load audio
+\end{lstlisting}
+
+\begin{lstlisting}[label={lst:splitaudio}, caption={разделение аудиофайла на фрагменты (продолжение)}]
 		audio_file = AudioSegment.from_file(audio_path, format="mp3")
 		# fragments length in milliseconds
 		part_length = step
-\end{lstlisting}
-
-\begin{lstlisting}
 		# split audio
 		parts = [audio_file[i:i + part_length] for i in range(0, len(audio_file), part_length)]
 		# save fragments
@@ -129,14 +129,14 @@
 		y, sr = librosa.load(audio_path)
 		onset_env = librosa.onset.onset_strength(y=y, sr=sr)
 		# amplitude peaks
+\end{lstlisting}
+
+\begin{lstlisting}[label={lst:measurerange}, caption={определение диапазона размеров (продолжение)}]
 		peaks = librosa.util.peak_pick(onset_env, pre_max=3, post_max=3, pre_avg=3,
 		post_avg=5, delta=0.5, wait=10)
 		peaks_time = librosa.frames_to_time(peaks, sr=sr)
 		_, beats = librosa.beat.beat_track(onset_envelope=onset_env, sr=sr)
 		beats_time = librosa.frames_to_time(beats, sr=sr)
-\end{lstlisting}
-
-\begin{lstlisting}
 		# beginnings of bars
 		downbeat_times = {}
 		for i, beat in enumerate(beats_time):
@@ -171,7 +171,7 @@
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.7]{inc/img/gui.jpg}
+	\includegraphics[scale=0.6]{inc/img/gui.jpg}
 	\caption{Интерфейс приложения}
 	\label{img:gui}
 \end{figure}
@@ -195,7 +195,7 @@
 
 Жанр в этом случае указывать необязательно.
 
-\newpage
+%\newpage
 
 \subsection{Тестирование приложения}
 
