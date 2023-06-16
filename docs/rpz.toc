@@ -37,4 +37,3 @@
 \contentsline {subsection}{\numberline {4.4}Оценка разработанного метода}{56}{subsection.4.4}%
 \contentsline {section}{ЗАКЛЮЧЕНИЕ}{58}{subsection.4.4}%
 \contentsline {section}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}{59}{subsection.4.4}%
-\contentsline {section}{ПРИЛОЖЕНИЕ А}{61}{subsection.4.4}%
